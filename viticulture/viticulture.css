@@ -1,0 +1,2475 @@
+/**
+ *------
+ * BGA framework: Â© Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * viticulture implementation : © Leo Bartoloni bartololeo74@gmail.com
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * viticulture.css
+ *
+ * viticulture stylesheet
+ *
+ */
+
+/*
+    This is the CSS stylesheet of your game User Interface.
+    
+    Styles defined on this file will be applied to the HTML elements you define in your
+    HTML template (viticulture_viticulture.tpl), and to HTML elements you create dynamically
+    (in viticulture.js).
+    
+    Usually, you are using CSS to:
+    
+    1Â°) define the overall layout of your game
+        (ex: place the board on the top left, place player's hand beside, place the deck on the right, ...).
+
+    2Â°) create your CSS-sprites:
+        All images of your games should be gathered into a small number of image files. Then, using
+        background-image and background-position CSS properties, you create HTML blocks that can 
+        display these images correctly (see example below).
+    
+    3Â°) ... anything else:
+        It is really easy to add and remove CSS classes dynamically from your Javascript with
+        dojo.addClass and dojo.removeClass. It is also easy to check if an element has a class
+        (dojo.hasClass) or to get all elements with a specific class (dojo.query). This is why,
+        very often, using CSS classes for the logic of your user interface allow you to do complex
+        thing easily.
+        
+        
+     Note: on the production platform, this file will be compressed and comments will be removed.
+           Consequently, don't hesitate to put as many comments as necessary.
+*/
+
+@import url(../../../css/csslayer.css); /* Note: you must not use any @import directive other than this one */
+
+/********* You can start writing your CSS below this line: **********/
+
+
+/*
+    Example of CSS sprites (a black token and a white token, 20x20px each, embedded in the same "tokens.png" 40x20px image):
+
+    .white_token {
+        background-image: url('img/tokens.png');
+        background-position: 0px 0px;
+    }
+    .black_token {
+        background-image: url('img/tokens.png');
+        background-position: -20px 0px;
+    }
+    .token {
+        width: 20px;
+        height: 20px;
+        background-repeat: none;
+    }
+*/
+
+._deck {
+  font-size:8px;
+}
+._deck td, ._deck th{
+  border:1px solid black;
+  padding: 1px;
+}
+._deck table{
+  border-collapse: collapse;
+}
+.action_slot {
+  z-index:10;
+  /*border: 2px solid red;*/
+}
+.disabled_action_slot{
+  z-index:1;
+  cursor: no-drop;
+}
+.action_slow_worker_disabled{
+  cursor: no-drop;
+}
+/** preview token animation **/
+.preview-token {
+  animation: preview_kf 2s ease-in-out infinite;
+}
+/** preview token animation **/
+.preview-token-origin {
+  animation: preview_kf 2s ease-in-out infinite;
+}
+.action_slot_worker.action_slot, .action_slot_worker.action_slot:hover{
+  border-width: 3px;
+}
+.action_slot_worker, .disabled_action_slot_worker{
+  width: 34px;
+  height: 24px;
+  border-radius: 50%;
+}
+.action_slot_worker_big, .disabled_action_slot_worker_big{
+  width: 68px;
+  height: 48px;
+  border-radius: 50%;
+}
+.disabled_action_slot_worker{
+  background-color: rgba(128, 128, 128, 0.7);
+  border-width: 3px;
+  border-color: rgba(30, 30, 30, 0.7);
+  border-style: solid;
+  margin:-2px -2px;
+  opacity: 0.5;
+}
+.disabled_action_slot_worker:hover{
+  opacity: 1;
+}
+.disabled_action_slot_worker:before, .disabled_action_slot_worker:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 34px;
+  width: 2px;
+  background-color: rgba(30, 30, 30, 0.7);
+  top: -5px;
+}
+.disabled_action_slot_worker:before {
+  transform: rotate(60deg);
+}
+.disabled_action_slot_worker:after {
+  transform: rotate(-60deg);
+}
+
+
+.field_slot{
+  width: 130px;
+  height: 108px;
+}
+.building_slot{
+  width: 110px;
+  min-height: 30px;
+  font-size: 10px;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: left;
+}
+.building_slot{
+  z-index:9;
+  user-select: none;
+}
+.building_slot .text{
+  font-size: 9px;
+  line-height: 11px;
+  user-select: none;
+}
+.building_slot .text .token{
+  zoom: 0.75;
+  -ms-zoom: 0.75;
+  -webkit-zoom: 0.75;
+  -moz-transform: scale(0.75,0.75);
+  -moz-transform-origin: left center;
+}
+.building_slot_tastingRoom{
+  width: 135px;
+}
+.building_slot_irrigation{
+  width: 90px;
+}
+.building_slot_mediumCellar, .building_slot_largeCellar{
+  text-align: center;
+}
+.building_slot_trellis{
+  width: 95px;
+  z-index: 15;
+}
+.building_slot_cottage{
+  width: 125px;
+}
+.wine_slot{
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+}
+.wine_slot.action_slot{
+  margin: -2px;
+  width: 19px;
+  height: 19px;
+}
+
+.building_slot_yoke .text{
+  width: 76px;
+}
+
+.playerBoardLabelsWineLegenda{
+  min-height: 48px;
+}
+.tooltip_boardLabels_wineLegenda{
+  line-height: 21px;
+}
+.wine_slot.selected{
+}
+
+.vit_first_player_token .token{
+  vertical-align: middle;
+}
+.vit_first_player_token{
+  visibility: hidden;
+  display: none;
+}
+.vit_first_player .vit_first_player_token{
+  visibility: visible;
+  display: inline;
+}
+
+.vit_token_value{
+  visibility: hidden;
+  display: none;
+}
+
+.vit_tokens_with_value .vit_token_value{
+  visibility: visible;
+  display: unset;
+}
+
+.vit_solo_element{
+  visibility: hidden;
+  display: none !important;
+}
+
+.vit_solo .vit_solo_element{
+  visibility: visible;
+  display: unset !important;
+}
+
+/** Shadow for square tokens or boards, make them appear more real board-gamish */
+.shadow {
+    -moz-box-shadow: 1px 1px 2px 1px #222;
+    -webkit-box-shadow: 1px 1px 2px 1px #222;
+    -o-box-shadow: 1px 1px 2px 1px #222;
+    box-shadow: 1px 1px 2px 1px #222;
+}
+
+.selected{
+    outline-color: yellow;
+    box-shadow: 1px 1px 2px 1px yellow, 0 0 5px yellow, 0 0 5px yellow;
+    border: 2px solid yellow !important;
+}
+
+.stock_confirmed_selection .stockitem:not(.stockitem_selected),.stock_confirm_selection .stockitem:not(.stockitem_selected){
+  opacity: 0.3 !important;
+}
+.stock_only_active .stockitem>div:not(.active_slot){
+  opacity: 0.3 !important;
+}
+
+.stockitem.disabled{
+  opacity: 0.3 !important;
+  cursor: default !important;
+}
+
+#turn_header{
+  position: absolute;
+  top: 3px;
+  left: 298px;
+  white-space: nowrap;
+  border: 2px solid rgba(200,200,200,0.6);
+  margin: 2px 1px 2px 1px;
+  padding: 2px 9px 1px 9px;
+  border-radius: 8px;
+  background-color: rgb(255,255,255);
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px;
+}
+#turn_header .gr_value{
+  font-weight: bold;
+}
+#turn_header .board_header_season{
+  margin-left: 5px;
+}
+
+.player_selection{
+  margin-bottom: 5px;
+  cursor: pointer !important;
+}
+.player_selection label{
+  padding: 5px;
+  cursor: pointer !important;
+}
+.player_selection .cc_counter{
+  vertical-align: baseline;
+}
+.player_selection>span{
+  padding: 5px;
+}
+
+.last_turn_label{
+  font-weight: bold;
+}
+.player_last_turn{
+  border: 1px solid black;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 5px;
+  vertical-align: baseline;
+  border-radius: 5px;
+  background-color: rgba(255,255,255,0.5);
+}
+.player_last_turn>span{
+  vertical-align: baseline;
+}
+
+#choose_mama_papa_section{
+  text-align: center;
+}
+#choose_mama_papa_stock_wrapper{
+  display: inline-block;
+  width: 996px;
+  text-align: initial;
+}
+
+/*hide hand in spectator mode*/
+.spectatorMode .playerboard_hand_zone {
+  display: none;
+}
+/*show hand label spectator mode*/
+.spectator_playerboard_hand_zone {
+  display: none;
+}
+/*show hand label spectator mode*/
+.spectatorMode .spectator_playerboard_hand_zone {
+  display: inline;
+}
+
+#choose_mama_papa_section .stockitem, .playerboard_hand_zone .stockitem, #choose_cards_stock .stockitem{
+  padding: 5px;
+}
+
+#choose_mama_papa_section .stockitem_selected{
+  border: 2px solid yellow !important;
+  border-radius: 12px;
+  padding: 0px;
+  background-color: orange;
+  margin: 6px;
+  padding-bottom: 4px;
+}
+.playerboard_hand_zone .stockitem_selected, #choose_cards_stock .stockitem_selected{
+  border: 2px solid yellow !important;
+  border-radius: 12px;
+  padding: 0px;
+  background-color: orange;
+  margin: 2px;
+  padding-bottom: 4px;
+  padding-right: 5px;
+}
+#choose_mama_papa_section .stockitem_selected .inner_element, .playerboard_hand_zone .stockitem_selected .inner_element, #choose_cards_stock .stockitem_selected .inner_element{
+  border: 1px solid transparent;
+  border-radius: 7px;
+}
+
+
+@keyframes greyscale-fade {
+  0%   { -webkit-filter: grayscale(0%); }
+  50% { -webkit-filter: grayscale(100%); }
+  100% { -webkit-filter: grayscale(0%); }
+}
+
+@keyframes visible-fade {
+  0%   { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/** selected discard card animation **/
+.playerboard_hand_zone[data-selectiontype=discard] .stockitem_selected {
+  border: 3px solid yellow !important;
+  border-radius: 12px;
+  padding: 0px;
+  background-color: orange;
+  margin: 2px;
+  padding-bottom: 4px;
+  padding-right: 5px;
+  margin-top: -6px;
+  margin-left: 1px;
+  z-index:99;
+}
+
+#choose_cards_section{
+  text-align: center;
+}
+#choose_cards_stock_wrapper{
+  display: inline-block;
+  width: 500px;
+  text-align: initial;
+}
+
+#choose_papa_option_section #choose_papa_option_section_wrapper{
+  text-align: center;
+}
+#choose_papa_option_section .card_wrapper{
+  display: inline-block;
+}
+
+.cc_counter.decrement{
+    color: red;
+}
+
+.cc_counter.handCardsSummary,.cc_counter.workersSummary{
+  min-width: auto;
+}
+.cc_counter.handCardsSummary>span,.cc_counter.workersSummary>span{
+  padding-left: 6px;
+  padding-right: 6px;
+  line-height: 20px;
+  font-size: 10px;
+}
+.handCardsSummary .token,.workersSummary .token{
+  margin-left: -4px !important;
+  margin-right: -4px !important;
+}
+
+.label_boardLabels{
+  position: absolute;
+  font-size: 11px;
+  line-height: 11px;
+  font-family: 'Times New Roman', Times, serif;
+  text-transform: uppercase;
+  width: 110px;
+  text-align: center;
+  user-select: none;
+}
+#label_boardLabels_122, #label_boardLabels_322{
+  width: 160px;
+}
+
+.boardLabelsWakeupOrder{
+  text-align: left;
+  font-size: 8px;
+}
+.boardLabelsSeasonTitle{
+  text-align: left;
+  font-size: 11px;
+  font-family: cursive;
+  text-transform: none;
+  width: 100px;
+}
+.boardLabelsSeasonText{
+  text-align: left;
+  font-size: 8.5px;
+  font-family: cursive;
+  text-transform: none;
+  width: 100px;
+}
+.boardLabelsSeasonTextSmall{
+  text-align: left;
+  font-size: 8.5px;
+  font-family: cursive;
+  text-transform: none;
+  width: 95px;
+  font-size: 8px;
+  user-select: none;
+}
+
+.label_playerBoardLabels{
+  position: absolute;
+  font-size: 11px;
+  line-height: 11px;
+  font-family: 'Times New Roman', Times, serif;
+  width: 110px;
+  text-align: center;
+  user-select: none;
+  /*border: 1px solid red;*/
+}
+.playerBoardLabelsSmall{
+  font-size: 9px;
+}
+.playerBoardLabelsSx{
+  text-align: left;
+}
+.playerBoardLabelsDx{
+  text-align: left;
+}
+.playerBoardLabelsWineLegenda{
+  font-size: 6px;
+  line-height: 7px;
+  width: 55px;
+}
+
+.label_boardLabels, .playerBoardLabels, .label_playerBoardLabels, .playerboard .building_slot {
+  text-shadow: 0px 0px 4px rgb(255 255 255 / 50%), 
+   1px 1px 3px rgb(255 255 255 / 50%), 
+   -1px -1px 3px rgb(255 255 255 / 50%),
+   1px -1px 3px rgb(255 255 255 / 50%), 
+   -1px 1px 3px rgb(255 255 255 / 50%)
+}
+
+.active_slot {
+    cursor: pointer;
+    border-color: #4040ff;
+    border-style: dashed;
+    border-width: 2px;
+}
+
+.active_slot:hover {
+    border-style: solid;
+    border-color: blue;
+    border-width: 2px;
+}
+
+.stock_active_slot .inner_element  {
+    cursor: pointer;
+    border-color: #4040ff;
+    border-style: dashed;
+    border-width: 4px;
+    border-radius: 8px;
+    margin-right: -4px;
+}
+.stock_active_slot .inner_element:hover {
+    border-style: solid;
+    border-color: blue;
+    border-width: 4px;
+}
+#choose_mama_papa_section.stock_active_slot .inner_element {
+}
+
+.card_discard.active_slot{
+  border-radius: 9px;
+  border-width: 4px;
+  margin: -2px;
+}
+
+.expandabletoggle:link, .expandabletoggle:hover, .expandabletoggle:active, .expandabletoggle:visited{
+  color: black !important;
+  text-decoration: none !important;
+}
+
+.history_player{
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 3px;
+}
+.history_moment{
+  font-size: 9px;
+  text-align: center;
+  margin-top: 0px;
+  font-weight: normal;
+}
+
+@keyframes blinker {
+  0% {
+    opacity: 0;
+  }
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes red-border-blinker  {
+  0% {
+    border-color: rgba (255,0,0,1);
+  }
+}
+
+@keyframes red-border-blinker {
+  50% {
+     border-color: rgba(255,0,0,0);
+  }
+}
+
+@keyframes preview_kf {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.change_value {
+  animation: blinker 1s linear;
+}
+
+.enabled_0 {
+   opacity: 0.5;
+}
+
+.tokentext {
+    vertical-align: middle;
+    margin:-3px 2px 1px 2px;
+}
+
+.cc_counter {
+    white-space: nowrap;
+    border: 2px solid rgba(200,200,200,0.4);
+    margin: 2px 1px 2px 1px;
+    padding: 2px 2px 0px 2px;
+    border-radius: 8px;
+    background-color: rgba(255,255,255,0.5);
+    display: inline-block;
+    min-width: 3em;
+    text-align: center;
+    vertical-align: middle;
+}
+.cc_player_board {
+    margin-top:2px;
+}
+.cc_counter .fa-gavel {
+    margin-left: 4px;
+    margin-right: 5px;
+}
+
+.cc_counter .token {
+    margin-left:5px;
+}
+
+.cc_counter.mamaName,.cc_counter.papaName{
+  min-width: 8px;
+  font-family: cursive;
+  font-size: 9px;
+  line-height: 20px;
+}
+
+.deck_count {
+  white-space: nowrap;
+  border: 2px solid rgb(128,128,128);
+  margin: 2px 1px 2px 1px;
+  padding: 2px 2px 0px 2px;
+  border-radius: 8px;
+  background-color: rgb(255,255,255);
+  display: inline-block;
+  min-width: 2em;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 11x;
+}
+
+.disabled{
+    opacity: 0.5;
+}
+
+.hidden, .action-hidden {
+    visibility: hidden !important;
+    display: none !important;
+}
+
+.border-dance{
+  background: 
+    linear-gradient(90deg, blue 50%, transparent 50%),
+    linear-gradient(0deg, blue 50%, transparent 50%),
+    linear-gradient(90deg, blue 50%, transparent 50%),
+    linear-gradient(0deg, blue 50%, transparent 50%);
+  background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
+  background-size: 15px 4px, 4px 15px, 15px 4px, 4px 15px;
+  background-position: left center, right top, left bottom, left center;
+  padding: 4px;
+  animation: border-dance 4s infinite linear;
+}
+    
+@keyframes border-dance 
+{
+  0%
+  {
+    background-position: left center, right top, right bottom, left bottom;
+  }
+  100% 
+  {
+    background-position: right top, right bottom, left bottom, left center;
+  }
+}
+
+.note {
+  font-style: italic;
+  font-size: 11px;
+}
+
+.smaller .token.small{
+    zoom: 0.75;
+    -ms-zoom: 0.75;
+    -webkit-zoom: 0.75;
+    -moz-transform: scale(0.75,0.75);
+    -moz-transform-origin: left center;
+}
+
+.token.small.smaller{
+  zoom: 0.75;
+  -ms-zoom: 0.75;
+  -webkit-zoom: 0.75;
+  -moz-transform: scale(0.75,0.75);
+  -moz-transform-origin: left center;
+}
+
+.card_tooltip .text {
+  max-width: 400px;
+  margin: 10px 0px 10px 0px;
+}
+
+.card_tooltip.purpleCard h1{
+  font-size: 4px;
+}
+
+.card_tooltip.purpleCard .text,.card_tooltip.greenCard .text{
+  line-height: 24px;
+}
+
+.card_tooltip li, .card_tooltip ul{
+  list-style: unset;
+  margin: unset;
+  margin-left: 10px;
+  padding: unset;
+  list-style-position: unset;
+  line-height: 22px;
+}
+
+.purpleCard.card_tooltip li, .card_tooltip ul{
+  line-height: 18px;
+}
+
+.card_tooltip .type{
+  float: right;
+  border-radius: 6px;
+  padding-right:6px;
+  padding-left:6px;
+  font-size:10px;
+}
+.card_tooltip .type.type_greenCard{
+  background-color: #07a042;
+  color:black;
+}
+.card_tooltip .type.type_yellowCard{
+  background-color: #e9cf4b;
+  color:black;
+}
+.card_tooltip .type.type_purpleCard{
+  background-color: #9b2761;
+  color:white;
+}
+.card_tooltip .type.type_blueCard{
+  background-color: #373191;
+  color:white;
+}
+
+.card_tooltip .text{
+  min-width: 230px;
+}
+
+.card .description .token.small{
+  zoom: 0.7;
+  -ms-zoom: 0.7;
+  -webkit-zoom: 0.7;
+  -moz-transform: scale(0.7,0.7);
+  -moz-transform-origin: left center;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.card.small .description .token.small.smaller, .card.small .automaCardBar .token.small.smaller{
+  zoom: 0.4;
+  -ms-zoom: 0.4;
+  -webkit-zoom: 0.4;
+  -moz-transform: scale(0.4,0.4);
+  -moz-transform-origin: left center;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+#board-row-container{
+  text-align: center;
+}
+
+.set_0 .board{
+  background-image: url(img/board.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 1024px;
+  height: 814px;
+  position: relative;
+  display: inline-block;
+}
+
+.playerboard{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+}
+
+.playerboard_row {
+  text-align: center;
+}
+
+.playerboard_row_header{
+  position: relative;
+  max-width: 1340px;
+  text-align: left;
+  width: 100%;
+  display: inline-block;
+}
+
+.playerboard_row_empty{
+  height: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.playerboard_hand_zone{
+  flex: 1;
+  width: 100%;
+  min-width: 200px;
+  max-width: 750px;
+}
+
+.playerboard_img_wrapper{
+  margin-right: 10px;
+  height: 408px;
+}
+
+.playerboard_img{
+  background-image: url(img/player_board.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 590px;
+  height: 408px;
+  position: relative;
+}
+
+/************************************ token *********************************/
+/************************************ token *********************************/
+/************************************ token *********************************/
+.token {
+    background-image: url(img/tokens.png);
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    background-repeat: no-repeat;
+}
+.token.small {
+    background-image: url(img/tokens_s.png);
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-repeat: no-repeat;
+}
+
+.token.sold{
+  background-image: url(img/field_sold.png);
+  width:60px;
+  height:60px;
+}
+.token.harvested{
+  background-image: none;
+  font-size: 10px;
+  width: 125px;
+  text-align: center;
+  /*transform: rotate(-45deg);*/
+  background-color: rgba(128,128,128,0.6);
+  height: 106px;
+  border-radius: 10px;
+  padding: 2px;
+  z-index: 30;
+}
+/*uproot vines needs to click over fields even if harvested*/
+#vit_game[data-state=client_uproot_choose] .token.harvested,#vit_game[data-state=client_uproot_confirm] .token.harvested{
+  z-index: 10;
+}
+
+.token.used{
+  background-image: none;
+  font-size: 12px;
+  width: 106px;
+  text-align: center;
+  background-color: rgba(128,128,128,0.5);
+  height: 60px;
+  border-radius: 19px;
+  padding: 2px;
+  z-index: 20;
+}
+.token.used.used_tastingRoomUsed {
+  width: 130px;
+}
+
+.token.component{
+  z-index: 15;
+}
+
+.token.grapeMarker, .token.wineMarker {
+  width: 26px;
+  height: 26px;
+  border-radius: 26px;
+  border: 3px solid transparent;
+  background-color: transparent !important;
+  z-index: 15;
+  padding: 0px;
+  margin: 0px;
+  background-image: none;
+}
+.token.grapeMarker .marker, .token.wineMarker .marker {
+  position: absolute;
+  width: 21px;
+  height: 21px;
+  border-radius: 21px;
+  border: 3px solid white;
+  background-color: transparent !important;
+  z-index: 15;
+  padding: 0px;
+  margin: 0px;
+  background-image: none;
+  display: inline-block;
+  top:-1px;
+  left:-1px;
+}
+.token.grapeMarker.active_slot .marker, .token.wineMarker.active_slot .marker {
+  border: 1.5px solid white;
+  top:1px;
+  left:1px;
+}
+
+.token.grapeMarker.active_slot, .token.wineMarker.active_slot {
+  border-color: #4040ff;
+  border-style: dashed;
+  border-width: 3px;
+  padding: 0px;
+  margin: 0px;
+}
+.token.grapeMarker.selected, .token.wineMarker.selected {
+  border-width: 3px;
+}
+
+.wakeupOrder_slot{
+  width: 110px;
+  height: 23px;
+  z-index: 2;
+}
+
+.residualPayment_slot{
+  width: 120px;
+  height: 120px;
+}
+
+.scoringTrack_slot{
+  width: 910px;
+  height: 45px;
+}
+
+/*firefox hacks*/
+@-moz-document url-prefix() {
+  .card .description .token.small.tokentext{
+    margin-top: -3px;
+    margin-bottom: -3px;
+    margin-right: 1px;
+    margin-right: -5px !important;
+  }
+  .card.small .description .token.small.tokentext{
+    margin-top: -6px;
+    margin-bottom: -6px;
+    margin-right: 1px;
+    margin-right: -11px !important;
+  }
+  
+  .building_slot .token.small.tokentext {
+    margin-top: -3px;
+    margin-bottom: -3px;
+    margin-right: -3px;
+  }
+}
+
+
+/************************************ cards *********************************/
+/************************************ cards *********************************/
+/************************************ cards *********************************/
+.card {
+    width: 192px;
+    height: 294px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    border-radius: 16px;
+    border: 1px solid #666;
+    background-color: white;
+    image-rendering: pixelated;
+    /*image-rendering: -moz-crisp-edges; */         /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+    position: relative;
+}
+.card:not(.small){
+    /*zoom: 0.75;
+    -ms-zoom: 0.75;
+    -webkit-zoom: 0.75;
+    -moz-transform: scale(0.75,0.75);
+    -moz-transform-origin: left center;*/
+}
+.card .name {
+  position: absolute;
+  margin: auto;
+  display: table;
+  width: 151px;
+  top: 33px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  left: 15px;
+  text-transform: uppercase;
+  font-family: 'Times New Roman', Times, serif;
+}
+.card.longName .name{
+  top: 28px;
+  font-size:14px;
+}
+.card.veryLongName .name{
+  top: 28px;
+  font-size: 13px;
+}
+.card.yellowCard .name,.card.blueCard .name {
+  transform: rotate(-8deg);
+}
+
+.card.greenCard .name {
+  width: 143px;
+  top: 44px;
+  font-size: 16px;
+  left: 29px;
+  line-height: 16px;
+}
+.card.greenCard.longName .name{
+  top: 37px;
+}
+.card.greenCard.veryLongName .name{
+  top: 37px;
+  font-size: 13px;
+}
+
+.card.automaCard .name {
+  position: absolute;
+  width: 192px;
+  top: 9px;
+  font-size: 16px;
+  line-height: 16px;
+  text-align: center;
+  left: 0px;
+}
+
+.card.automaCard div.automaCardBar{
+  position: absolute;
+  width: 192px;
+  font-size: 12px;
+  left: 0px;
+  line-height: 12px;
+  text-align: center;
+  height: 64px;
+}
+.card.automaCard .automaCardBar .automaCardBarText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.card.automaCard .automaCardBar1 {
+  top:28px;
+}
+
+.card.automaCard .automaCardBar2 {
+  top:93px;
+}
+
+.card.automaCard .automaCardBar3 {
+  top:157px;
+}
+
+.card.automaCard .automaCardBar4 {
+  top:222px;
+}
+
+.card.small {
+  width: 96px;
+  height: 147px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+}
+.card.small .name {
+  width: 80px;
+  top: 19px;
+  font-size: 8px;
+  left: 5px;
+}
+.card.small.longName .name{
+  top: 15px;
+  font-size: 7px;
+}
+.card.small.veryLongName .name{
+  top: 14px;
+  font-size: 6.5px;
+}
+
+.card.greenCard.small .name {
+  width: 78px;
+  top: 22px;
+  font-size: 9px;
+  line-height: 9px;
+  left: 10px;
+}
+.card.greenCard.small.longName .name{
+  top: 18px;
+  font-size: 8px;
+  line-height: 8px;
+}
+.card.greenCard.small.veryLongName .name{
+  top: 18px;
+  font-size: 6.5px;
+}
+
+
+.card.automaCard.small .name {
+  width: 96px;
+  top: 5px;
+  font-size: 9px;
+  line-height: 9px;
+}
+
+.card.automaCard.small div.automaCardBar{
+  width: 96px;
+  font-size: 6px;
+  line-height: 6px;
+  height: 32px;
+}
+
+
+.card.automaCard.small .automaCardBar1 {
+  top:14px;
+}
+
+.card.automaCard.small .automaCardBar2 {
+  top:46px;
+}
+
+.card.automaCard.small .automaCardBar3 {
+  top:80px;
+}
+
+.card.automaCard.small .automaCardBar4 {
+  top:111px;
+}
+
+.card .description {
+  position: relative;
+  margin: auto;
+  display: table;
+  width: 156px;
+  top: 229px;
+  left: -1px;
+  font-size: 10px;
+  line-height: 12px;
+  text-align: left;
+}
+.card.small .description {
+  width: 78px;
+  top: 114px;
+  font-size: 6px;
+  left: -1px;
+  line-height: 6px;
+}
+.card.yellowCard {
+  background-image: url(img/yellowCards.png);
+}
+.card.small.yellowCard {
+  background-image: url(img/yellowCards_s.png);
+}
+.card.greenCard {
+  background-image: url(img/greenCards.png);
+}
+.card.small.greenCard {
+  background-image: url(img/greenCards_s.png);
+}
+.card.purpleCard {
+  background-image: url(img/purpleCards.png);
+}
+.card.small.purpleCard {
+  background-image: url(img/purpleCards_s.png);
+}
+.card.blueCard {
+  background-image: url(img/blueCards.png);
+}
+.card.small.blueCard {
+  background-image: url(img/blueCards_s.png);
+}
+
+.card.automaCard, .automaCardBarSea1, .automaCardBarSea2, .automaCardBarSea3, .automaCardBarSea4 {
+  background-image: url(img/automa.png);
+}
+.card.small.automaCard, .card.small.automaCard .automaCardBarSea1, .card.small.automaCard .automaCardBarSea2,.card.small.automaCard .automaCardBarSea3, .card.small.automaCard .automaCardBarSea4{
+  background-image: url(img/automa_s.png);
+}
+
+.mamaPapaCard {
+  background-image: url(img/mamasPapas.png);
+  width: 292px;
+  height: 209px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  border-radius: 16px;
+  border: 1px solid #666;
+  position:relative;
+}
+.mamaPapaCard.medium {
+  zoom: 0.8;
+  -ms-zoom: 0.8;
+  -webkit-zoom: 0.8;
+  -moz-transform: scale(0.8,0.8);
+  -moz-transform-origin: left center;
+}
+.mamaPapaCard:not(.small){
+/*  zoom: 0.75;
+  -ms-zoom: 0.75;
+  -webkit-zoom: 0.75;
+  -moz-transform: scale(0.75,0.75);
+  -moz-transform-origin: left center;*/
+}
+.mamaPapaCard.mama .name {
+  position: absolute;
+  margin: auto;
+  display: table;
+  width: 140px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  transform: rotate(-10deg);
+  left: 133px;
+  top: 31px;
+  font-family: cursive;
+}
+.mamaPapaCard.mama .title {
+  position: absolute;
+  margin: auto;
+  display: table;
+  width: 140px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  transform: rotate(-10deg);
+  left: 114px;
+  top: 12px;
+  font-family: cursive;
+}
+.mamaPapaCard.papa .name {
+  position: absolute;
+  margin: auto;
+  display: table;
+  width: 140px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  transform: rotate(-10deg);
+  left: 5px;
+  top: 31px;
+  font-family: cursive;
+}
+.mamaPapaCard.papa .title {
+  position: absolute;
+  margin: auto;
+  display: table;
+  width: 140px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  transform: rotate(-10deg);
+  left: -11px;
+  top: 12px;
+  font-family: cursive;
+}
+.mamaPapaCard.small {
+  background-image: url(img/mamasPapas_s.png);
+  width: 146px;
+  height: 104px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+}
+
+.mamaPapaCard.small.mama .title {
+  width: 77px;
+  top: 4px;
+  font-size: 8px;
+  left: 53px;
+  transform: rotate(-10deg);
+}
+.mamaPapaCard.small.mama .name {
+  width: 77px;
+  top: 14px;
+  font-size: 9px;
+  left: 60px;
+  transform: rotate(-10deg);
+}
+
+.mamaPapaCard.small.papa .title {
+  width: 77px;
+  top: 3px;
+  font-size: 8px;
+  left: -8px;
+  transform: rotate(-10deg);
+}
+
+.mamaPapaCard.small.papa .name {
+  width: 77px;
+  top: 13px;
+  font-size: 9px;
+  left: 1px;
+  transform: rotate(-10deg);
+}
+
+.vine_card {
+  width: 120px;
+  height: 20px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+  background-color: rgb(65, 136, 65);
+}
+.vine_card .name {
+  position: absolute;
+  width: 74px;
+  top: 5px;
+  left: 42px;
+  font-size: 9px;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: 'Times New Roman', Times, serif;
+}
+.vine_card.longName .name{
+  top: 6px;
+  font-size: 7px;
+}
+.vine_card.veryLongName .name{
+  top: 6px;
+  font-size: 6px;
+}
+.vine_card .red{
+  position: absolute;
+  top: 1px;
+  left: 2px;
+}
+.vine_card .white{
+  position: absolute;
+  top: 1px;
+  left: 22px;
+}
+.vine.selected, .vine.active_slot { 
+  border-radius: 8px;
+}
+.vine_card .token.grape{
+  zoom: 0.85;
+  -ms-zoom: 0.85;
+  -webkit-zoom: 0.85;
+  -moz-transform: scale(0.85,0.85);
+  -moz-transform-origin: left center;
+  margin-top: 0px;
+}
+
+.player-board, .playerboard_row {
+	transition: background-color 1s;
+}
+.player-board.vit_passed, .playerboard_row.vit_passed {
+	background-color: #b7b0a8;
+  background-image: none;
+}
+#vit_game[data-season=4] .player-board.vit_passed, #vit_game[data-season=4] .playerboard_row.vit_passed{
+	background-color: #958f88;
+  background-image: none;
+}
+.vit_preferences{
+  text-align: start;
+  margin-top: 2px;
+  font-size: 75%;
+}
+.vit_preferences input{
+  vertical-align: middle;
+}
+
+#playerboard_wrapper_-1{
+  display: none;
+}
+
+.cc_player_board_automa{
+  border-top: 2px solid #f5eade;
+  margin-top: 5px;
+  padding-top: 5px;
+}
+
+#soloModeInstructions h1{
+  font-size:  22px;
+  font-weight:  bold;
+  margin-top: 8px;
+}
+#soloModeInstructions li{
+  list-style: disc;
+  margin-left: 23px !important;
+}
+
+.vit_solovariantscoring td{
+  padding: 5px;
+  text-align: center;
+  border-collapse: collapse;
+  border: 1px solid #bbbbbb;
+}
+
+
+/*@media only screen and (min-width: 1800px) {
+  #board{
+    zoom: 1.2;
+    -ms-zoom: 1.2;
+    -webkit-zoom: 1.2;
+  }
+  #history_section{
+    zoom: 1.2;
+    -ms-zoom: 1.2;
+    -webkit-zoom: 1.2;
+  }
+  .playerboard_row {
+    zoom: 1.2;
+    -ms-zoom: 1.2;
+    -webkit-zoom: 1.2;
+  }
+}
+@media only screen and (min-width: 2200px) {
+  #board{
+    zoom: 1.4;
+    -ms-zoom: 1.4;
+    -webkit-zoom: 1.4;
+  }
+  #history_section{
+    zoom: 1.4;
+    -ms-zoom: 1.4;
+    -webkit-zoom: 1.4;
+  }
+  .playerboard_row {
+    zoom: 1.4;
+    -ms-zoom: 1.4;
+    -webkit-zoom: 1.4;
+  }
+}*/
+
+/*responsive high resolution 4 columns*/
+@media only screen and (min-width: 3600px) {
+  #vit_boards_wrapper{
+    display: grid;
+    grid-template-columns: 1048px auto 660px 660px;
+    max-width: 4096px;
+  }
+  #board-row{
+    grid-row-start: 1;
+    grid-row-end: span 2;
+  }
+  #history_section{
+    grid-row: 3;
+    grid-column-start: 1;
+    grid-column-end: span 4;
+  }
+  .playerboard_row {
+    margin-left: 10px;
+  }
+  .playerboard_row_other{
+    text-align: left;
+  }
+  .playerboard_row_other .playerboard{
+    justify-content: left;
+  }
+}
+
+/*responsive high resolution 3 columns*/
+@media only screen and (min-width: 2920px) and (max-width: 3600px) {
+  #vit_boards_wrapper{
+    display: grid;
+    grid-template-columns: 1048px auto 660px;
+    max-width: 4096px;
+  }
+  #board-row{
+    grid-row-start: 1;
+    grid-row-end: span 2;
+  }
+  #history_section{
+    grid-row: 4;
+    grid-column-start: 1;
+    grid-column-end: span 3;
+  }
+  .playerboard_row {
+    margin-left: 10px;
+  }
+  .playerboard_row_other{
+    text-align: left;
+  }
+  .playerboard_row_other .playerboard{
+    justify-content: left;
+  }
+}
+
+/*responsive high resolution 2 columns*/
+@media only screen and (min-width: 2245px) and (max-width: 2920px){
+  #vit_boards_wrapper{
+    display: grid;
+    grid-template-columns: 1048px auto;
+    max-width: 2408px;
+  }
+  #board-row{
+    grid-row-start: 1;
+    grid-row-end: span 2;
+  }
+  #history_section{
+    grid-row: 5;
+    grid-column-start: 1;
+    grid-column-end: span 2;
+  }
+  .playerboard_row {
+    margin-left: 10px;
+  }
+  .playerboard_row_other{
+    text-align: left;
+  }
+  .playerboard_row_other .playerboard{
+    justify-content: left;
+  }
+}
+
+
+.token.worker_g:before{
+  position: absolute;
+  top: 13px;
+  left: 11px;
+  content: 'G';
+  font-size: 9px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.token.worker_g.small:before{
+  position: absolute;
+  top: 8px;
+  left: 6px;
+  content: 'G';
+  font-size: 8px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.tokentext.token.worker_g.small:before{
+  position: relative;
+  left: 0px;
+  top: 2px;
+}
+#pagemaintitletext .tokentext.token.worker_g.small:before{
+  top: -4px;
+}
+.standard_popin .token.worker_g.small:before{
+  left: 6px;
+  top: 6px;
+}
+.token.worker_g.worker_g_ff0000:before{
+  color: white;
+}
+.token.worker_g.worker_g_0000ff:before{
+  color: white;
+}
+.token.worker_g.worker_g_ffa500:before{
+  color: black;
+}
+.token.worker_g.worker_g_e94190:before{
+  color: white;
+}
+.token.worker_g.worker_g_008000:before{
+  color: white;
+}
+.token.worker_g.worker_g_ffffff:before{
+  color: black;
+}
+
+.shared_location{
+  /*border: 1px solid red;*/
+  width: 30px;
+  height: 20px;
+}
+
+
+
+/************************************ purple cards *********************************/
+/************************************ purple cards *********************************/
+/************************************ purple cards *********************************/
+.card.card_401 {  background-position: -0px -0px ; }
+.card.card_402 {  background-position: -192px -0px ; }
+.card.card_403 {  background-position: -384px -0px ; }
+.card.card_404 {  background-position: -576px -0px ; }
+.card.card_405 {  background-position: -768px -0px ; }
+.card.card_406 {  background-position: -960px -0px ; }
+.card.card_407 {  background-position: -1152px -0px ; }
+.card.card_408 {  background-position: -1344px -0px ; }
+.card.card_409 {  background-position: -1536px -0px ; }
+.card.card_410 {  background-position: -1728px -0px ; }
+.card.card_411 {  background-position: -0px -294px ; }
+.card.card_412 {  background-position: -192px -294px ; }
+.card.card_413 {  background-position: -384px -294px ; }
+.card.card_414 {  background-position: -576px -294px ; }
+.card.card_415 {  background-position: -768px -294px ; }
+.card.card_416 {  background-position: -960px -294px ; }
+.card.card_417 {  background-position: -1152px -294px ; }
+.card.card_418 {  background-position: -1344px -294px ; }
+.card.card_419 {  background-position: -1536px -294px ; }
+.card.card_420 {  background-position: -1728px -294px ; }
+.card.card_421 {  background-position: -0px -588px ; }
+.card.card_422 {  background-position: -192px -588px ; }
+.card.card_423 {  background-position: -384px -588px ; }
+.card.card_424 {  background-position: -576px -588px ; }
+.card.card_425 {  background-position: -768px -588px ; }
+.card.card_426 {  background-position: -960px -588px ; }
+.card.card_427 {  background-position: -1152px -588px ; }
+.card.card_428 {  background-position: -1344px -588px ; }
+.card.card_429 {  background-position: -1536px -588px ; }
+.card.card_430 {  background-position: -1728px -588px ; }
+.card.card_431 {  background-position: -0px -882px ; }
+.card.card_432 {  background-position: -192px -882px ; }
+.card.card_433 {  background-position: -384px -882px ; }
+.card.card_434 {  background-position: -576px -882px ; }
+.card.card_435 {  background-position: -768px -882px ; }
+.card.card_436 {  background-position: -960px -882px ; }
+.card.small.card_401 {  background-position: -0px -0px ; }
+.card.small.card_402 {  background-position: -96px -0px ; }
+.card.small.card_403 {  background-position: -192px -0px ; }
+.card.small.card_404 {  background-position: -288px -0px ; }
+.card.small.card_405 {  background-position: -384px -0px ; }
+.card.small.card_406 {  background-position: -480px -0px ; }
+.card.small.card_407 {  background-position: -576px -0px ; }
+.card.small.card_408 {  background-position: -672px -0px ; }
+.card.small.card_409 {  background-position: -768px -0px ; }
+.card.small.card_410 {  background-position: -864px -0px ; }
+.card.small.card_411 {  background-position: -0px -147px ; }
+.card.small.card_412 {  background-position: -96px -147px ; }
+.card.small.card_413 {  background-position: -192px -147px ; }
+.card.small.card_414 {  background-position: -288px -147px ; }
+.card.small.card_415 {  background-position: -384px -147px ; }
+.card.small.card_416 {  background-position: -480px -147px ; }
+.card.small.card_417 {  background-position: -576px -147px ; }
+.card.small.card_418 {  background-position: -672px -147px ; }
+.card.small.card_419 {  background-position: -768px -147px ; }
+.card.small.card_420 {  background-position: -864px -147px ; }
+.card.small.card_421 {  background-position: -0px -294px ; }
+.card.small.card_422 {  background-position: -96px -294px ; }
+.card.small.card_423 {  background-position: -192px -294px ; }
+.card.small.card_424 {  background-position: -288px -294px ; }
+.card.small.card_425 {  background-position: -384px -294px ; }
+.card.small.card_426 {  background-position: -480px -294px ; }
+.card.small.card_427 {  background-position: -576px -294px ; }
+.card.small.card_428 {  background-position: -672px -294px ; }
+.card.small.card_429 {  background-position: -768px -294px ; }
+.card.small.card_430 {  background-position: -864px -294px ; }
+.card.small.card_431 {  background-position: -0px -441px ; }
+.card.small.card_432 {  background-position: -96px -441px ; }
+.card.small.card_433 {  background-position: -192px -441px ; }
+.card.small.card_434 {  background-position: -288px -441px ; }
+.card.small.card_435 {  background-position: -384px -441px ; }
+.card.small.card_436 {  background-position: -480px -441px ; }
+
+
+/* backs */
+.purpleCard.card.card_back {  background-position: -1152px -882px ; }	
+.purpleCard.card.small.card_back {  background-position: -576px -441px ; }
+
+
+/************************************ green cards *********************************/
+/************************************ green cards *********************************/
+/************************************ green cards *********************************/
+.card.card_201 {  background-position: -0px -0px ; }
+.card.card_202 {  background-position: -192px -0px ; }
+.card.card_203 {  background-position: -384px -0px ; }
+.card.card_204 {  background-position: -576px -0px ; }
+.card.card_205 {  background-position: -768px -0px ; }
+.card.card_206 {  background-position: -960px -0px ; }
+.card.card_207 {  background-position: -1152px -0px ; }
+.card.card_208 {  background-position: -1344px -0px ; }
+.card.card_209 {  background-position: -1536px -0px ; }
+.card.small.card_201 {  background-position: -0px -0px ; }
+.card.small.card_202 {  background-position: -96px -0px ; }
+.card.small.card_203 {  background-position: -192px -0px ; }
+.card.small.card_204 {  background-position: -288px -0px ; }
+.card.small.card_205 {  background-position: -384px -0px ; }
+.card.small.card_206 {  background-position: -480px -0px ; }
+.card.small.card_207 {  background-position: -576px -0px ; }
+.card.small.card_208 {  background-position: -672px -0px ; }
+.card.small.card_209 {  background-position: -768px -0px ; }
+
+
+/* backs */
+.greenCard.card.card_back {  background-position: -1728px -0px ; }	
+.greenCard.card.small.card_back {  background-position: -864px -0px ; }
+
+
+
+/************************************ yellow cards *********************************/
+/************************************ yellow cards *********************************/
+/************************************ yellow cards *********************************/
+.card.card_601 {  background-position: -0px -0px ; }
+.card.card_602 {  background-position: -192px -0px ; }
+.card.card_603 {  background-position: -384px -0px ; }
+.card.card_604 {  background-position: -576px -0px ; }
+.card.card_605 {  background-position: -768px -0px ; }
+.card.card_606 {  background-position: -960px -0px ; }
+.card.card_607 {  background-position: -1152px -0px ; }
+.card.card_608 {  background-position: -1344px -0px ; }
+.card.card_609 {  background-position: -1536px -0px ; }
+.card.card_610 {  background-position: -1728px -0px ; }
+.card.card_611 {  background-position: -0px -294px ; }
+.card.card_612 {  background-position: -192px -294px ; }
+.card.card_613 {  background-position: -384px -294px ; }
+.card.card_614 {  background-position: -576px -294px ; }
+.card.card_615 {  background-position: -768px -294px ; }
+.card.card_616 {  background-position: -960px -294px ; }
+.card.card_617 {  background-position: -1152px -294px ; }
+.card.card_618 {  background-position: -1344px -294px ; }
+.card.card_619 {  background-position: -1536px -294px ; }
+.card.card_620 {  background-position: -1728px -294px ; }
+.card.card_621 {  background-position: -0px -588px ; }
+.card.card_622 {  background-position: -192px -588px ; }
+.card.card_623 {  background-position: -384px -588px ; }
+.card.card_624 {  background-position: -576px -588px ; }
+.card.card_625 {  background-position: -768px -588px ; }
+.card.card_626 {  background-position: -960px -588px ; }
+.card.card_627 {  background-position: -1152px -588px ; }
+.card.card_628 {  background-position: -1344px -588px ; }
+.card.card_629 {  background-position: -1536px -588px ; }
+.card.card_630 {  background-position: -1728px -588px ; }
+.card.card_631 {  background-position: -0px -882px ; }
+.card.card_632 {  background-position: -192px -882px ; }
+.card.card_633 {  background-position: -384px -882px ; }
+.card.card_634 {  background-position: -576px -882px ; }
+.card.card_635 {  background-position: -768px -882px ; }
+.card.card_636 {  background-position: -960px -882px ; }
+.card.card_637 {  background-position: -1152px -882px ; }
+.card.card_638 {  background-position: -1344px -882px ; }
+.card.small.card_601 {  background-position: -0px -0px ; }
+.card.small.card_602 {  background-position: -96px -0px ; }
+.card.small.card_603 {  background-position: -192px -0px ; }
+.card.small.card_604 {  background-position: -288px -0px ; }
+.card.small.card_605 {  background-position: -384px -0px ; }
+.card.small.card_606 {  background-position: -480px -0px ; }
+.card.small.card_607 {  background-position: -576px -0px ; }
+.card.small.card_608 {  background-position: -672px -0px ; }
+.card.small.card_609 {  background-position: -768px -0px ; }
+.card.small.card_610 {  background-position: -864px -0px ; }
+.card.small.card_611 {  background-position: -0px -147px ; }
+.card.small.card_612 {  background-position: -96px -147px ; }
+.card.small.card_613 {  background-position: -192px -147px ; }
+.card.small.card_614 {  background-position: -288px -147px ; }
+.card.small.card_615 {  background-position: -384px -147px ; }
+.card.small.card_616 {  background-position: -480px -147px ; }
+.card.small.card_617 {  background-position: -576px -147px ; }
+.card.small.card_618 {  background-position: -672px -147px ; }
+.card.small.card_619 {  background-position: -768px -147px ; }
+.card.small.card_620 {  background-position: -864px -147px ; }
+.card.small.card_621 {  background-position: -0px -294px ; }
+.card.small.card_622 {  background-position: -96px -294px ; }
+.card.small.card_623 {  background-position: -192px -294px ; }
+.card.small.card_624 {  background-position: -288px -294px ; }
+.card.small.card_625 {  background-position: -384px -294px ; }
+.card.small.card_626 {  background-position: -480px -294px ; }
+.card.small.card_627 {  background-position: -576px -294px ; }
+.card.small.card_628 {  background-position: -672px -294px ; }
+.card.small.card_629 {  background-position: -768px -294px ; }
+.card.small.card_630 {  background-position: -864px -294px ; }
+.card.small.card_631 {  background-position: -0px -441px ; }
+.card.small.card_632 {  background-position: -96px -441px ; }
+.card.small.card_633 {  background-position: -192px -441px ; }
+.card.small.card_634 {  background-position: -288px -441px ; }
+.card.small.card_635 {  background-position: -384px -441px ; }
+.card.small.card_636 {  background-position: -480px -441px ; }
+.card.small.card_637 {  background-position: -576px -441px ; }
+.card.small.card_638 {  background-position: -672px -441px ; }
+
+
+/* backs */
+.yellowCard.card.card_back {  background-position: -1536px -882px ; }	
+.yellowCard.card.small.card_back {  background-position: -768px -441px ; }
+
+
+
+/************************************ blue cards *********************************/
+/************************************ blue cards *********************************/
+/************************************ blue cards *********************************/
+.card.card_801 {  background-position: -0px -0px ; }
+.card.card_802 {  background-position: -192px -0px ; }
+.card.card_803 {  background-position: -384px -0px ; }
+.card.card_804 {  background-position: -576px -0px ; }
+.card.card_805 {  background-position: -768px -0px ; }
+.card.card_806 {  background-position: -960px -0px ; }
+.card.card_807 {  background-position: -1152px -0px ; }
+.card.card_808 {  background-position: -1344px -0px ; }
+.card.card_809 {  background-position: -1536px -0px ; }
+.card.card_810 {  background-position: -1728px -0px ; }
+.card.card_811 {  background-position: -0px -294px ; }
+.card.card_812 {  background-position: -192px -294px ; }
+.card.card_813 {  background-position: -384px -294px ; }
+.card.card_814 {  background-position: -576px -294px ; }
+.card.card_815 {  background-position: -768px -294px ; }
+.card.card_816 {  background-position: -960px -294px ; }
+.card.card_817 {  background-position: -1152px -294px ; }
+.card.card_818 {  background-position: -1344px -294px ; }
+.card.card_819 {  background-position: -1536px -294px ; }
+.card.card_820 {  background-position: -1728px -294px ; }
+.card.card_821 {  background-position: -0px -588px ; }
+.card.card_822 {  background-position: -192px -588px ; }
+.card.card_823 {  background-position: -384px -588px ; }
+.card.card_824 {  background-position: -576px -588px ; }
+.card.card_825 {  background-position: -768px -588px ; }
+.card.card_826 {  background-position: -960px -588px ; }
+.card.card_827 {  background-position: -1152px -588px ; }
+.card.card_828 {  background-position: -1344px -588px ; }
+.card.card_829 {  background-position: -1536px -588px ; }
+.card.card_830 {  background-position: -1728px -588px ; }
+.card.card_831 {  background-position: -0px -882px ; }
+.card.card_832 {  background-position: -192px -882px ; }
+.card.card_833 {  background-position: -384px -882px ; }
+.card.card_834 {  background-position: -576px -882px ; }
+.card.card_835 {  background-position: -768px -882px ; }
+.card.card_836 {  background-position: -960px -882px ; }
+.card.card_837 {  background-position: -1152px -882px ; }
+.card.card_838 {  background-position: -1344px -882px ; }
+.card.small.card_801 {  background-position: -0px -0px ; }
+.card.small.card_802 {  background-position: -96px -0px ; }
+.card.small.card_803 {  background-position: -192px -0px ; }
+.card.small.card_804 {  background-position: -288px -0px ; }
+.card.small.card_805 {  background-position: -384px -0px ; }
+.card.small.card_806 {  background-position: -480px -0px ; }
+.card.small.card_807 {  background-position: -576px -0px ; }
+.card.small.card_808 {  background-position: -672px -0px ; }
+.card.small.card_809 {  background-position: -768px -0px ; }
+.card.small.card_810 {  background-position: -864px -0px ; }
+.card.small.card_811 {  background-position: -0px -147px ; }
+.card.small.card_812 {  background-position: -96px -147px ; }
+.card.small.card_813 {  background-position: -192px -147px ; }
+.card.small.card_814 {  background-position: -288px -147px ; }
+.card.small.card_815 {  background-position: -384px -147px ; }
+.card.small.card_816 {  background-position: -480px -147px ; }
+.card.small.card_817 {  background-position: -576px -147px ; }
+.card.small.card_818 {  background-position: -672px -147px ; }
+.card.small.card_819 {  background-position: -768px -147px ; }
+.card.small.card_820 {  background-position: -864px -147px ; }
+.card.small.card_821 {  background-position: -0px -294px ; }
+.card.small.card_822 {  background-position: -96px -294px ; }
+.card.small.card_823 {  background-position: -192px -294px ; }
+.card.small.card_824 {  background-position: -288px -294px ; }
+.card.small.card_825 {  background-position: -384px -294px ; }
+.card.small.card_826 {  background-position: -480px -294px ; }
+.card.small.card_827 {  background-position: -576px -294px ; }
+.card.small.card_828 {  background-position: -672px -294px ; }
+.card.small.card_829 {  background-position: -768px -294px ; }
+.card.small.card_830 {  background-position: -864px -294px ; }
+.card.small.card_831 {  background-position: -0px -441px ; }
+.card.small.card_832 {  background-position: -96px -441px ; }
+.card.small.card_833 {  background-position: -192px -441px ; }
+.card.small.card_834 {  background-position: -288px -441px ; }
+.card.small.card_835 {  background-position: -384px -441px ; }
+.card.small.card_836 {  background-position: -480px -441px ; }
+.card.small.card_837 {  background-position: -576px -441px ; }
+.card.small.card_838 {  background-position: -672px -441px ; }
+
+
+/* backs */
+.blueCard.card.card_back {  background-position: -1536px -882px ; }	
+.blueCard.card.small.card_back {  background-position: -768px -441px ; }
+
+
+
+/************************************ mama cards *********************************/
+/************************************ mama cards *********************************/
+/************************************ mama cards *********************************/
+.mamaPapaCard.card_1 {  background-position: -0px -0px; }
+.mamaPapaCard.card_2 {  background-position: -292px -0px; }
+.mamaPapaCard.card_3 {  background-position: -584px -0px; }
+.mamaPapaCard.card_4 {  background-position: -876px -0px; }
+.mamaPapaCard.card_5 {  background-position: -1168px -0px; }
+.mamaPapaCard.card_6 {  background-position: -1460px -0px; }
+.mamaPapaCard.card_7 {  background-position: -1752px -0px; }
+.mamaPapaCard.card_8 {  background-position: -2044px -0px; }
+.mamaPapaCard.card_9 {  background-position: -2336px -0px; }
+.mamaPapaCard.card_10 {  background-position: -2628px -0px; }
+.mamaPapaCard.card_11 {  background-position: -0px -210px; }
+.mamaPapaCard.card_12 {  background-position: -292px -210px; }
+.mamaPapaCard.card_13 {  background-position: -584px -210px; }
+.mamaPapaCard.card_14 {  background-position: -876px -210px; }
+.mamaPapaCard.card_15 {  background-position: -1168px -210px; }
+.mamaPapaCard.card_16 {  background-position: -1460px -210px; }
+.mamaPapaCard.card_17 {  background-position: -1752px -210px; }
+.mamaPapaCard.card_18 {  background-position: -2044px -210px; }
+.mamaPapaCard.small.card_1 {  background-position: -0px -0px; }
+.mamaPapaCard.small.card_2 {  background-position: -146px -0px; }
+.mamaPapaCard.small.card_3 {  background-position: -292px -0px; }
+.mamaPapaCard.small.card_4 {  background-position: -438px -0px; }
+.mamaPapaCard.small.card_5 {  background-position: -584px -0px; }
+.mamaPapaCard.small.card_6 {  background-position: -730px -0px; }
+.mamaPapaCard.small.card_7 {  background-position: -876px -0px; }
+.mamaPapaCard.small.card_8 {  background-position: -1022px -0px; }
+.mamaPapaCard.small.card_9 {  background-position: -1168px -0px; }
+.mamaPapaCard.small.card_10 {  background-position: -1314px -0px; }
+.mamaPapaCard.small.card_11 {  background-position: -0px -105px; }
+.mamaPapaCard.small.card_12 {  background-position: -146px -105px; }
+.mamaPapaCard.small.card_13 {  background-position: -292px -105px; }
+.mamaPapaCard.small.card_14 {  background-position: -438px -105px; }
+.mamaPapaCard.small.card_15 {  background-position: -584px -105px; }
+.mamaPapaCard.small.card_16 {  background-position: -730px -105px; }
+.mamaPapaCard.small.card_17 {  background-position: -876px -105px; }
+.mamaPapaCard.small.card_18 {  background-position: -1022px -105px; }
+
+
+
+
+
+
+/************************************ papa cards *********************************/
+/************************************ papa cards *********************************/
+/************************************ papa cards *********************************/
+.mamaPapaCard.card_101 {  background-position: -2628px -210px; }
+.mamaPapaCard.card_102 {  background-position: -0px -420px; }
+.mamaPapaCard.card_103 {  background-position: -292px -420px; }
+.mamaPapaCard.card_104 {  background-position: -584px -420px; }
+.mamaPapaCard.card_105 {  background-position: -876px -420px; }
+.mamaPapaCard.card_106 {  background-position: -1168px -420px; }
+.mamaPapaCard.card_107 {  background-position: -1460px -420px; }
+.mamaPapaCard.card_108 {  background-position: -1752px -420px; }
+.mamaPapaCard.card_109 {  background-position: -2044px -420px; }
+.mamaPapaCard.card_110 {  background-position: -2336px -420px; }
+.mamaPapaCard.card_111 {  background-position: -2628px -420px; }
+.mamaPapaCard.card_112 {  background-position: -0px -630px; }
+.mamaPapaCard.card_113 {  background-position: -292px -630px; }
+.mamaPapaCard.card_114 {  background-position: -584px -630px; }
+.mamaPapaCard.card_115 {  background-position: -876px -630px; }
+.mamaPapaCard.card_116 {  background-position: -1168px -630px; }
+.mamaPapaCard.card_117 {  background-position: -1460px -630px; }
+.mamaPapaCard.card_118 {  background-position: -1752px -630px; }
+.mamaPapaCard.small.card_101 {  background-position: -1314px -105px; }
+.mamaPapaCard.small.card_102 {  background-position: -0px -210px; }
+.mamaPapaCard.small.card_103 {  background-position: -146px -210px; }
+.mamaPapaCard.small.card_104 {  background-position: -292px -210px; }
+.mamaPapaCard.small.card_105 {  background-position: -438px -210px; }
+.mamaPapaCard.small.card_106 {  background-position: -584px -210px; }
+.mamaPapaCard.small.card_107 {  background-position: -730px -210px; }
+.mamaPapaCard.small.card_108 {  background-position: -876px -210px; }
+.mamaPapaCard.small.card_109 {  background-position: -1022px -210px; }
+.mamaPapaCard.small.card_110 {  background-position: -1168px -210px; }
+.mamaPapaCard.small.card_111 {  background-position: -1314px -210px; }
+.mamaPapaCard.small.card_112 {  background-position: -0px -315px; }
+.mamaPapaCard.small.card_113 {  background-position: -146px -315px; }
+.mamaPapaCard.small.card_114 {  background-position: -292px -315px; }
+.mamaPapaCard.small.card_115 {  background-position: -438px -315px; }
+.mamaPapaCard.small.card_116 {  background-position: -584px -315px; }
+.mamaPapaCard.small.card_117 {  background-position: -730px -315px; }
+.mamaPapaCard.small.card_118 {  background-position: -876px -315px; }
+
+
+
+
+/************************************ tokens *********************************/
+/************************************ tokens *********************************/
+/************************************ tokens *********************************/
+/*
+.token.worker,.token.worker_1,.token.worker_2,.token.worker_3,.token.worker_4,.token.worker_5
+.token.worker.worker_ff0000,.token.worker_1.worker_1_ff0000,.token.worker_2.worker_2_ff0000,.token.worker_3.worker_3_ff0000,.token.worker_4.worker_4_ff0000,.token.worker_5.worker_5_ff0000
+.token.worker.worker_0000ff,.token.worker_1.worker_1_0000ff,.token.worker_2.worker_2_0000ff,.token.worker_3.worker_3_0000ff,.token.worker_4.worker_4_0000ff,.token.worker_5.worker_5_0000ff
+.token.worker.worker_ffa500,.token.worker_1.worker_1_ffa500,.token.worker_2.worker_2_ffa500,.token.worker_3.worker_3_ffa500,.token.worker_4.worker_4_ffa500,.token.worker_5.worker_5_ffa500
+.token.worker.worker_e94190,.token.worker_1.worker_1_e94190,.token.worker_2.worker_2_e94190,.token.worker_3.worker_3_e94190,.token.worker_4.worker_4_e94190,.token.worker_5.worker_5_e94190
+.token.worker.worker_008000,.token.worker_1.worker_1_008000,.token.worker_2.worker_2_008000,.token.worker_3.worker_3_008000,.token.worker_4.worker_4_008000,.token.worker_5.worker_5_008000
+.token.worker.worker_ffffff,.token.worker_1.worker_1_ffffff,.token.worker_2.worker_2_ffffff,.token.worker_3.worker_3_ffffff,.token.worker_4.worker_4_ffffff,.token.worker_5.worker_5_ffffff
+.token.small.worker,.token.small.worker_1,.token.small.worker_2,.token.small.worker_3,.token.small.worker_4,.token.small.worker_5
+.token.small.worker.worker_ff0000,.token.small.worker_1.worker_1_ff0000,.token.small.worker_2.worker_2_ff0000,.token.small.worker_3.worker_3_ff0000,.token.small.worker_4.worker_4_ff0000,.token.small.worker_5.worker_5_ff0000
+.token.small.worker.worker_0000ff,.token.small.worker_1.worker_1_0000ff,.token.small.worker_2.worker_2_0000ff,.token.small.worker_3.worker_3_0000ff,.token.small.worker_4.worker_4_0000ff,.token.small.worker_5.worker_5_0000ff
+.token.small.worker.worker_ffa500,.token.small.worker_1.worker_1_ffa500,.token.small.worker_2.worker_2_ffa500,.token.small.worker_3.worker_3_ffa500,.token.small.worker_4.worker_4_ffa500,.token.small.worker_5.worker_5_ffa500
+.token.small.worker.worker_e94190,.token.small.worker_1.worker_1_e94190,.token.small.worker_2.worker_2_e94190,.token.small.worker_3.worker_3_e94190,.token.small.worker_4.worker_4_e94190,.token.small.worker_5.worker_5_e94190
+.token.small.worker.worker_008000,.token.small.worker_1.worker_1_008000,.token.small.worker_2.worker_2_008000,.token.small.worker_3.worker_3_008000,.token.small.worker_4.worker_4_008000,.token.small.worker_5.worker_5_008000
+.token.small.worker.worker_ffffff,.token.small.worker_1.worker_1_ffffff,.token.small.worker_2.worker_2_ffffff,.token.small.worker_3.worker_3_ffffff,.token.small.worker_4.worker_4_ffffff,.token.small.worker_5.worker_5_ffffff
+*/
+
+/* here because less priority */
+.token.wineRed {  background-position: -180px -540px ; }
+.token.wineWhite {  background-position: -210px -540px ; }
+.token.wineBlush {  background-position: -240px -540px ; }
+.token.wineSparkling {  background-position: -270px -540px ; }
+.token.small.wineRed {  background-position: -120px -360px ; }
+.token.small.wineWhite {  background-position: -140px -360px ; }
+.token.small.wineBlush {  background-position: -160px -360px ; }
+.token.small.wineSparkling {  background-position: -180px -360px ; }
+
+.token.lira {  background-position: -0px -0px ; }
+.token.lira1 {  background-position: -30px -0px ; }
+.token.lira2 {  background-position: -60px -0px ; }
+.token.lira3 {  background-position: -90px -0px ; }
+.token.lira4 {  background-position: -120px -0px ; }
+.token.lira5 {  background-position: -150px -0px ; }
+.token.lira6 {  background-position: -180px -0px ; }
+.token.lira7 {  background-position: -210px -0px ; }
+.token.lira8 {  background-position: -240px -0px ; }
+.token.lira9 {  background-position: -270px -0px ; }
+.token.lira0 {  background-position: -150px -540px ; }
+.token.vp {  background-position: -0px -30px ; }
+.token.vp1 {  background-position: -30px -30px ; }
+.token.vp2 {  background-position: -60px -30px ; }
+.token.vp3 {  background-position: -90px -30px ; }
+.token.vp4 {  background-position: -120px -30px ; }
+.token.vp5 {  background-position: -150px -30px ; }
+.token.vp6 {  background-position: -180px -30px ; }
+.token.residualPayment1 {  background-position: -210px -30px ; }
+.token.residualPayment2 {  background-position: -240px -30px ; }
+.token.residualPayment {  background-position: -270px -30px ; }
+.token.grapeAny {  background-position: -0px -60px ; }
+.token.grapeAny1 {  background-position: -30px -60px ; }
+.token.wineAny {  background-position: -60px -60px ; }
+.token.firstPlayer {  background-position: -90px -60px ; }
+.token.marker, .token.wakeup_bonus {  background-position: -120px -60px ; }
+.token.summerSlots {  background-position: -150px -60px ; }
+.token.winterSlots {  background-position: -180px -60px ; }
+.token.worker_t {  background-position: -210px -60px ; }
+.token.grapeRed {  background-position: -240px -60px ; }
+.token.grapeRed1 {  background-position: -270px -60px ; }
+.token.grapeRed2 {  background-position: -0px -90px ; }
+.token.grapeRed3 {  background-position: -30px -90px ; }
+.token.grapeRed4 {  background-position: -60px -90px ; }
+.token.grapeWhite {  background-position: -90px -90px ; }
+.token.grapeWhite1 {  background-position: -120px -90px ; }
+.token.grapeWhite2 {  background-position: -150px -90px ; }
+.token.grapeWhite3 {  background-position: -180px -90px ; }
+.token.grapeWhite4 {  background-position: -210px -90px ; }
+.token.wineRed1 {  background-position: -240px -90px ; }
+.token.wineRed2 {  background-position: -270px -90px ; }
+.token.wineRed3 {  background-position: -0px -120px ; }
+.token.wineRed4 {  background-position: -30px -120px ; }
+.token.wineRed5 {  background-position: -60px -120px ; }
+.token.wineRed6 {  background-position: -90px -120px ; }
+.token.wineRed7 {  background-position: -120px -120px ; }
+.token.wineRed8 {  background-position: -150px -120px ; }
+.token.wineRed9 {  background-position: -180px -120px ; }
+.token.wineWhite1 {  background-position: -210px -120px ; }
+.token.wineWhite2 {  background-position: -240px -120px ; }
+.token.wineWhite3 {  background-position: -270px -120px ; }
+.token.wineWhite4 {  background-position: -0px -150px ; }
+.token.wineWhite5 {  background-position: -30px -150px ; }
+.token.wineWhite6 {  background-position: -60px -150px ; }
+.token.wineWhite7 {  background-position: -90px -150px ; }
+.token.wineWhite8 {  background-position: -120px -150px ; }
+.token.wineWhite9 {  background-position: -150px -150px ; }
+.token.wineBlush4 {  background-position: -180px -150px ; }
+.token.wineBlush5 {  background-position: -210px -150px ; }
+.token.wineBlush6 {  background-position: -240px -150px ; }
+.token.wineBlush7 {  background-position: -270px -150px ; }
+.token.wineBlush8 {  background-position: -0px -180px ; }
+.token.wineBlush9 {  background-position: -30px -180px ; }
+.token.wineSparkling7 {  background-position: -60px -180px ; }
+.token.wineSparkling8 {  background-position: -90px -180px ; }
+.token.wineSparkling9 {  background-position: -120px -180px ; }
+.token.anyCard {  background-position: -150px -180px ; }
+.token.greenCard {  background-position: -180px -180px ; }
+.token.greenCardPlus {  background-position: -210px -180px ; }
+.token.yellowCard {  background-position: -240px -180px ; }
+.token.yellowCardPlus {  background-position: -270px -180px ; }
+.token.purpleCard {  background-position: -0px -210px ; }
+.token.purpleCardPlus {  background-position: -30px -210px ; }
+.token.blueCard {  background-position: -60px -210px ; }
+.token.blueCardPlus {  background-position: -90px -210px ; }
+.token.rooster {  background-position: -120px -210px ; }
+.token.worker,.token.worker_1,.token.worker_2,.token.worker_3,.token.worker_4,.token.worker_5
+.token.workerGrande {  background-position: -180px -210px ; }
+.token.trellis {  background-position: -210px -210px ; }
+.token.windmill {  background-position: -240px -210px ; }
+.token.irrigation {  background-position: -270px -210px ; }
+.token.cottage {  background-position: -0px -240px ; }
+.token.tastingRoom {  background-position: -30px -240px ; }
+.token.cellar, .token.mediumCellar {  background-position: -60px -240px ; }
+.token.largeCellar {  background-position: -90px -240px ; }
+.token.yoke {  background-position: -120px -240px ; }
+.token.bottle {  background-position: -150px -240px ; }
+.token.star {  background-position: -180px -240px ; }
+.token.workerSpecialMan {  background-position: -210px -240px ; }
+.token.workerSpecialWoman {  background-position: -240px -240px ; }
+.token.rooster.rooster_ff0000 {  background-position: -270px -240px ; }
+.token.worker.worker_ff0000,.token.worker_1.worker_1_ff0000,.token.worker_2.worker_2_ff0000,.token.worker_3.worker_3_ff0000,.token.worker_4.worker_4_ff0000,.token.worker_5.worker_5_ff0000 {  background-position: -0px -270px ; }
+.token.worker_g.worker_g_ff0000 {  background-position: -30px -270px ; }
+.token.trellis.trellis_ff0000 {  background-position: -60px -270px ; }
+.token.windmill.windmill_ff0000 {  background-position: -90px -270px ; }
+.token.irrigation.irrigation_ff0000 {  background-position: -120px -270px ; }
+.token.cottage.cottage_ff0000 {  background-position: -150px -270px ; }
+.token.tastingRoom.tastingRoom_ff0000 {  background-position: -180px -270px ; }
+.token.mediumCellar.mediumCellar_ff0000 {  background-position: -210px -270px ; }
+.token.largeCellar.largeCellar_ff0000 {  background-position: -240px -270px ; }
+.token.yoke.yoke_ff0000 {  background-position: -270px -270px ; }
+.token.bottle.bottle_ff0000 {  background-position: -0px -300px ; }
+.token.star.star_ff0000 {  background-position: -30px -300px ; }
+.token.workerSpecialMan.workerSpecialMan_ff0000 {  background-position: -60px -300px ; }
+.token.workerSpecialWoman.workerSpecialWoman_ff0000 {  background-position: -90px -300px ; }
+.token.scoring.scoring_ff0000 {  background-position: -120px -300px ; }
+.token.rooster.rooster_0000ff {  background-position: -150px -300px ; }
+.token.worker.worker_0000ff,.token.worker_1.worker_1_0000ff,.token.worker_2.worker_2_0000ff,.token.worker_3.worker_3_0000ff,.token.worker_4.worker_4_0000ff,.token.worker_5.worker_5_0000ff{  background-position: -180px -300px ; }
+.token.worker_g.worker_g_0000ff {  background-position: -210px -300px ; }
+.token.trellis.trellis_0000ff {  background-position: -240px -300px ; }
+.token.windmill.windmill_0000ff {  background-position: -270px -300px ; }
+.token.irrigation.irrigation_0000ff {  background-position: -0px -330px ; }
+.token.cottage.cottage_0000ff {  background-position: -30px -330px ; }
+.token.tastingRoom.tastingRoom_0000ff {  background-position: -60px -330px ; }
+.token.mediumCellar.mediumCellar_0000ff {  background-position: -90px -330px ; }
+.token.largeCellar.largeCellar_0000ff {  background-position: -120px -330px ; }
+.token.yoke.yoke_0000ff {  background-position: -150px -330px ; }
+.token.bottle.bottle_0000ff {  background-position: -180px -330px ; }
+.token.star.star_0000ff {  background-position: -210px -330px ; }
+.token.workerSpecialMan.workerSpecialMan_0000ff {  background-position: -240px -330px ; }
+.token.workerSpecialWoman.workerSpecialWoman_0000ff {  background-position: -270px -330px ; }
+.token.scoring.scoring_0000ff {  background-position: -0px -360px ; }
+.token.rooster.rooster_ffa500 {  background-position: -30px -360px ; }
+.token.worker.worker_ffa500,.token.worker_1.worker_1_ffa500,.token.worker_2.worker_2_ffa500,.token.worker_3.worker_3_ffa500,.token.worker_4.worker_4_ffa500,.token.worker_5.worker_5_ffa500 {  background-position: -60px -360px ; }
+.token.worker_g.worker_g_ffa500 {  background-position: -90px -360px ; }
+.token.trellis.trellis_ffa500 {  background-position: -120px -360px ; }
+.token.windmill.windmill_ffa500 {  background-position: -150px -360px ; }
+.token.irrigation.irrigation_ffa500 {  background-position: -180px -360px ; }
+.token.cottage.cottage_ffa500 {  background-position: -210px -360px ; }
+.token.tastingRoom.tastingRoom_ffa500 {  background-position: -240px -360px ; }
+.token.mediumCellar.mediumCellar_ffa500 {  background-position: -270px -360px ; }
+.token.largeCellar.largeCellar_ffa500 {  background-position: -0px -390px ; }
+.token.yoke.yoke_ffa500 {  background-position: -30px -390px ; }
+.token.bottle.bottle_ffa500 {  background-position: -60px -390px ; }
+.token.star.star_ffa500 {  background-position: -90px -390px ; }
+.token.workerSpecialMan.workerSpecialMan_ffa500 {  background-position: -120px -390px ; }
+.token.workerSpecialWoman.workerSpecialWoman_ffa500 {  background-position: -150px -390px ; }
+.token.scoring.scoring_ffa500 {  background-position: -180px -390px ; }
+.token.rooster.rooster_e94190 {  background-position: -210px -390px ; }
+.token.worker.worker_e94190,.token.worker_1.worker_1_e94190,.token.worker_2.worker_2_e94190,.token.worker_3.worker_3_e94190,.token.worker_4.worker_4_e94190,.token.worker_5.worker_5_e94190 {  background-position: -240px -390px ; }
+.token.worker_g.worker_g_e94190 {  background-position: -270px -390px ; }
+.token.trellis.trellis_e94190 {  background-position: -0px -420px ; }
+.token.windmill.windmill_e94190 {  background-position: -30px -420px ; }
+.token.irrigation.irrigation_e94190 {  background-position: -60px -420px ; }
+.token.cottage.cottage_e94190 {  background-position: -90px -420px ; }
+.token.tastingRoom.tastingRoom_e94190 {  background-position: -120px -420px ; }
+.token.mediumCellar.mediumCellar_e94190 {  background-position: -150px -420px ; }
+.token.largeCellar.largeCellar_e94190 {  background-position: -180px -420px ; }
+.token.yoke.yoke_e94190 {  background-position: -210px -420px ; }
+.token.bottle.bottle_e94190 {  background-position: -240px -420px ; }
+.token.star.star_e94190 {  background-position: -270px -420px ; }
+.token.workerSpecialMan.workerSpecialMan_e94190 {  background-position: -0px -450px ; }
+.token.workerSpecialWoman.workerSpecialWoman_e94190 {  background-position: -30px -450px ; }
+.token.scoring.scoring_e94190 {  background-position: -60px -450px ; }
+.token.rooster.rooster_008000 {  background-position: -90px -450px ; }
+.token.worker.worker_008000,.token.worker_1.worker_1_008000,.token.worker_2.worker_2_008000,.token.worker_3.worker_3_008000,.token.worker_4.worker_4_008000,.token.worker_5.worker_5_008000 {  background-position: -120px -450px ; }
+.token.worker_g.worker_g_008000 {  background-position: -150px -450px ; }
+.token.trellis.trellis_008000 {  background-position: -180px -450px ; }
+.token.windmill.windmill_008000 {  background-position: -210px -450px ; }
+.token.irrigation.irrigation_008000 {  background-position: -240px -450px ; }
+.token.cottage.cottage_008000 {  background-position: -270px -450px ; }
+.token.tastingRoom.tastingRoom_008000 {  background-position: -0px -480px ; }
+.token.mediumCellar.mediumCellar_008000 {  background-position: -30px -480px ; }
+.token.largeCellar.largeCellar_008000 {  background-position: -60px -480px ; }
+.token.yoke.yoke_008000 {  background-position: -90px -480px ; }
+.token.bottle.bottle_008000 {  background-position: -120px -480px ; }
+.token.star.star_008000 {  background-position: -150px -480px ; }
+.token.workerSpecialMan.workerSpecialMan_008000 {  background-position: -180px -480px ; }
+.token.workerSpecialWoman.workerSpecialWoman_008000 {  background-position: -210px -480px ; }
+.token.scoring.scoring_008000 {  background-position: -240px -480px ; }
+.token.rooster.rooster_ffffff {  background-position: -270px -480px ; }
+.token.worker.worker_ffffff,.token.worker_1.worker_1_ffffff,.token.worker_2.worker_2_ffffff,.token.worker_3.worker_3_ffffff,.token.worker_4.worker_4_ffffff,.token.worker_5.worker_5_ffffff {  background-position: -0px -510px ; }
+.token.worker_g.worker_g_ffffff {  background-position: -30px -510px ; }
+.token.trellis.trellis_ffffff {  background-position: -60px -510px ; }
+.token.windmill.windmill_ffffff {  background-position: -90px -510px ; }
+.token.irrigation.irrigation_ffffff {  background-position: -120px -510px ; }
+.token.cottage.cottage_ffffff {  background-position: -150px -510px ; }
+.token.tastingRoom.tastingRoom_ffffff {  background-position: -180px -510px ; }
+.token.mediumCellar.mediumCellar_ffffff {  background-position: -210px -510px ; }
+.token.largeCellar.largeCellar_ffffff {  background-position: -240px -510px ; }
+.token.yoke.yoke_ffffff {  background-position: -270px -510px ; }
+.token.bottle.bottle_ffffff {  background-position: -0px -540px ; }
+.token.star.star_ffffff {  background-position: -30px -540px ; }
+.token.workerSpecialMan.workerSpecialMan_ffffff {  background-position: -60px -540px ; }
+.token.workerSpecialWoman.workerSpecialWoman_ffffff {  background-position: -90px -540px ; }
+.token.scoring.scoring_ffffff {  background-position: -120px -540px ; }
+.token.vp7 {  background-position: -0px -570px ; }
+.token.grapeRed5 {  background-position: -30px -570px ; }
+.token.grapeRed6 {  background-position: -60px -570px ; }
+.token.grapeRed7 {  background-position: -90px -570px ; }
+.token.grapeRed8 {  background-position: -120px -570px ; }
+.token.grapeRed9 {  background-position: -150px -570px ; }
+.token.grapeWhite5 {  background-position: -180px -570px ; }
+.token.grapeWhite6 {  background-position: -210px -570px ; }
+.token.grapeWhite7 {  background-position: -240px -570px ; }
+.token.grapeWhite8 {  background-position: -270px -570px ; }
+.token.grapeWhite9 {  background-position: -0px -600px ; }
+
+.token.small.lira {  background-position: -0px -0px ; }
+.token.small.lira1 {  background-position: -20px -0px ; }
+.token.small.lira2 {  background-position: -40px -0px ; }
+.token.small.lira3 {  background-position: -60px -0px ; }
+.token.small.lira4 {  background-position: -80px -0px ; }
+.token.small.lira5 {  background-position: -100px -0px ; }
+.token.small.lira6 {  background-position: -120px -0px ; }
+.token.small.lira7 {  background-position: -140px -0px ; }
+.token.small.lira8 {  background-position: -160px -0px ; }
+.token.small.lira9 {  background-position: -180px -0px ; }
+.token.small.lira0 {  background-position: -100px -360px ; }
+.token.small.vp {  background-position: -0px -20px ; }
+.token.small.vp1 {  background-position: -20px -20px ; }
+.token.small.vp2 {  background-position: -40px -20px ; }
+.token.small.vp3 {  background-position: -60px -20px ; }
+.token.small.vp4 {  background-position: -80px -20px ; }
+.token.small.vp5 {  background-position: -100px -20px ; }
+.token.small.vp6 {  background-position: -120px -20px ; }
+.token.small.residualPayment1 {  background-position: -140px -20px ; }
+.token.small.residualPayment2 {  background-position: -160px -20px ; }
+.token.small.residualPayment {  background-position: -180px -20px ; }
+.token.small.grapeAny {  background-position: -0px -40px ; }
+.token.small.grapeAny1 {  background-position: -20px -40px ; }
+.token.small.wineAny {  background-position: -40px -40px ; }
+.token.small.firstPlayer {  background-position: -60px -40px ; }
+.token.small.marker, .token.small.wakeup_bonus  {  background-position: -80px -40px ; }
+.token.small.summerSlots {  background-position: -100px -40px ; }
+.token.small.winterSlots {  background-position: -120px -40px ; }
+.token.small.worker_t {  background-position: -140px -40px ; }
+.token.small.grapeRed {  background-position: -160px -40px ; }
+.token.small.grapeRed1 {  background-position: -180px -40px ; }
+.token.small.grapeRed2 {  background-position: -0px -60px ; }
+.token.small.grapeRed3 {  background-position: -20px -60px ; }
+.token.small.grapeRed4 {  background-position: -40px -60px ; }
+.token.small.grapeWhite {  background-position: -60px -60px ; }
+.token.small.grapeWhite1 {  background-position: -80px -60px ; }
+.token.small.grapeWhite2 {  background-position: -100px -60px ; }
+.token.small.grapeWhite3 {  background-position: -120px -60px ; }
+.token.small.grapeWhite4 {  background-position: -140px -60px ; }
+.token.small.wineRed1 {  background-position: -160px -60px ; }
+.token.small.wineRed2 {  background-position: -180px -60px ; }
+.token.small.wineRed3 {  background-position: -0px -80px ; }
+.token.small.wineRed4 {  background-position: -20px -80px ; }
+.token.small.wineRed5 {  background-position: -40px -80px ; }
+.token.small.wineRed6 {  background-position: -60px -80px ; }
+.token.small.wineRed7 {  background-position: -80px -80px ; }
+.token.small.wineRed8 {  background-position: -100px -80px ; }
+.token.small.wineRed9 {  background-position: -120px -80px ; }
+.token.small.wineWhite1 {  background-position: -140px -80px ; }
+.token.small.wineWhite2 {  background-position: -160px -80px ; }
+.token.small.wineWhite3 {  background-position: -180px -80px ; }
+.token.small.wineWhite4 {  background-position: -0px -100px ; }
+.token.small.wineWhite5 {  background-position: -20px -100px ; }
+.token.small.wineWhite6 {  background-position: -40px -100px ; }
+.token.small.wineWhite7 {  background-position: -60px -100px ; }
+.token.small.wineWhite8 {  background-position: -80px -100px ; }
+.token.small.wineWhite9 {  background-position: -100px -100px ; }
+.token.small.wineBlush4 {  background-position: -120px -100px ; }
+.token.small.wineBlush5 {  background-position: -140px -100px ; }
+.token.small.wineBlush6 {  background-position: -160px -100px ; }
+.token.small.wineBlush7 {  background-position: -180px -100px ; }
+.token.small.wineBlush8 {  background-position: -0px -120px ; }
+.token.small.wineBlush9 {  background-position: -20px -120px ; }
+.token.small.wineSparkling7 {  background-position: -40px -120px ; }
+.token.small.wineSparkling8 {  background-position: -60px -120px ; }
+.token.small.wineSparkling9 {  background-position: -80px -120px ; }
+.token.small.anyCard {  background-position: -100px -120px ; }
+.token.small.greenCard {  background-position: -120px -120px ; }
+.token.small.greenCardPlus {  background-position: -140px -120px ; }
+.token.small.yellowCard {  background-position: -160px -120px ; }
+.token.small.yellowCardPlus {  background-position: -180px -120px ; }
+.token.small.purpleCard {  background-position: -0px -140px ; }
+.token.small.purpleCardPlus {  background-position: -20px -140px ; }
+.token.small.blueCard {  background-position: -40px -140px ; }
+.token.small.blueCardPlus {  background-position: -60px -140px ; }
+.token.small.rooster {  background-position: -80px -140px ; }
+.token.small.worker,.token.small.worker_1,.token.small.worker_2,.token.small.worker_3,.token.small.worker_4,.token.small.worker_5 {  background-position: -100px -140px ; }
+.token.small.workerGrande {  background-position: -120px -140px ; }
+.token.small.trellis {  background-position: -140px -140px ; }
+.token.small.windmill {  background-position: -160px -140px ; }
+.token.small.irrigation {  background-position: -180px -140px ; }
+.token.small.cottage {  background-position: -0px -160px ; }
+.token.small.tastingRoom {  background-position: -20px -160px ; }
+.token.small.cellar, .token.mediumCellar {  background-position: -40px -160px ; }
+.token.small.largeCellar {  background-position: -60px -160px ; }
+.token.small.yoke {  background-position: -80px -160px ; }
+.token.small.bottle {  background-position: -100px -160px ; }
+.token.small.star {  background-position: -120px -160px ; }
+.token.small.workerSpecialMan {  background-position: -140px -160px ; }
+.token.small.workerSpecialWoman {  background-position: -160px -160px ; }
+.token.small.rooster.rooster_ff0000 {  background-position: -180px -160px ; }
+.token.small.worker.worker_ff0000,.token.small.worker_1.worker_1_ff0000,.token.small.worker_2.worker_2_ff0000,.token.small.worker_3.worker_3_ff0000,.token.small.worker_4.worker_4_ff0000,.token.small.worker_5.worker_5_ff0000 {  background-position: -0px -180px ; }
+.token.small.worker_g.worker_g_ff0000 {  background-position: -20px -180px ; }
+.token.small.trellis.trellis_ff0000 {  background-position: -40px -180px ; }
+.token.small.windmill.windmill_ff0000 {  background-position: -60px -180px ; }
+.token.small.irrigation.irrigation_ff0000 {  background-position: -80px -180px ; }
+.token.small.cottage.cottage_ff0000 {  background-position: -100px -180px ; }
+.token.small.tastingRoom.tastingRoom_ff0000 {  background-position: -120px -180px ; }
+.token.small.mediumCellar.mediumCellar_ff0000 {  background-position: -140px -180px ; }
+.token.small.largeCellar.largeCellar_ff0000 {  background-position: -160px -180px ; }
+.token.small.yoke.yoke_ff0000 {  background-position: -180px -180px ; }
+.token.small.bottle.bottle_ff0000 {  background-position: -0px -200px ; }
+.token.small.star.star_ff0000 {  background-position: -20px -200px ; }
+.token.small.workerSpecialMan.workerSpecialMan_ff0000 {  background-position: -40px -200px ; }
+.token.small.workerSpecialWoman.workerSpecialWoman_ff0000 {  background-position: -60px -200px ; }
+.token.small.scoring.scoring_ff0000 {  background-position: -80px -200px ; }
+.token.small.rooster.rooster_0000ff {  background-position: -100px -200px ; }
+.token.small.worker.worker_0000ff,.token.small.worker_1.worker_1_0000ff,.token.small.worker_2.worker_2_0000ff,.token.small.worker_3.worker_3_0000ff,.token.small.worker_4.worker_4_0000ff,.token.small.worker_5.worker_5_0000ff {  background-position: -120px -200px ; }
+.token.small.worker_g.worker_g_0000ff {  background-position: -140px -200px ; }
+.token.small.trellis.trellis_0000ff {  background-position: -160px -200px ; }
+.token.small.windmill.windmill_0000ff {  background-position: -180px -200px ; }
+.token.small.irrigation.irrigation_0000ff {  background-position: -0px -220px ; }
+.token.small.cottage.cottage_0000ff {  background-position: -20px -220px ; }
+.token.small.tastingRoom.tastingRoom_0000ff {  background-position: -40px -220px ; }
+.token.small.mediumCellar.mediumCellar_0000ff {  background-position: -60px -220px ; }
+.token.small.largeCellar.largeCellar_0000ff {  background-position: -80px -220px ; }
+.token.small.yoke.yoke_0000ff {  background-position: -100px -220px ; }
+.token.small.bottle.bottle_0000ff {  background-position: -120px -220px ; }
+.token.small.star.star_0000ff {  background-position: -140px -220px ; }
+.token.small.workerSpecialMan.workerSpecialMan_0000ff {  background-position: -160px -220px ; }
+.token.small.workerSpecialWoman.workerSpecialWoman_0000ff {  background-position: -180px -220px ; }
+.token.small.scoring.scoring_0000ff {  background-position: -0px -240px ; }
+.token.small.rooster.rooster_ffa500 {  background-position: -20px -240px ; }
+.token.small.worker.worker_ffa500,.token.small.worker_1.worker_1_ffa500,.token.small.worker_2.worker_2_ffa500,.token.small.worker_3.worker_3_ffa500,.token.small.worker_4.worker_4_ffa500,.token.small.worker_5.worker_5_ffa500 {  background-position: -40px -240px ; }
+.token.small.worker_g.worker_g_ffa500 {  background-position: -60px -240px ; }
+.token.small.trellis.trellis_ffa500 {  background-position: -80px -240px ; }
+.token.small.windmill.windmill_ffa500 {  background-position: -100px -240px ; }
+.token.small.irrigation.irrigation_ffa500 {  background-position: -120px -240px ; }
+.token.small.cottage.cottage_ffa500 {  background-position: -140px -240px ; }
+.token.small.tastingRoom.tastingRoom_ffa500 {  background-position: -160px -240px ; }
+.token.small.mediumCellar.mediumCellar_ffa500 {  background-position: -180px -240px ; }
+.token.small.largeCellar.largeCellar_ffa500 {  background-position: -0px -260px ; }
+.token.small.yoke.yoke_ffa500 {  background-position: -20px -260px ; }
+.token.small.bottle.bottle_ffa500 {  background-position: -40px -260px ; }
+.token.small.star.star_ffa500 {  background-position: -60px -260px ; }
+.token.small.workerSpecialMan.workerSpecialMan_ffa500 {  background-position: -80px -260px ; }
+.token.small.workerSpecialWoman.workerSpecialWoman_ffa500 {  background-position: -100px -260px ; }
+.token.small.scoring.scoring_ffa500 {  background-position: -120px -260px ; }
+.token.small.rooster.rooster_e94190 {  background-position: -140px -260px ; }
+.token.small.worker.worker_e94190,.token.small.worker_1.worker_1_e94190,.token.small.worker_2.worker_2_e94190,.token.small.worker_3.worker_3_e94190,.token.small.worker_4.worker_4_e94190,.token.small.worker_5.worker_5_e94190 {  background-position: -160px -260px ; }
+.token.small.worker_g.worker_g_e94190 {  background-position: -180px -260px ; }
+.token.small.trellis.trellis_e94190 {  background-position: -0px -280px ; }
+.token.small.windmill.windmill_e94190 {  background-position: -20px -280px ; }
+.token.small.irrigation.irrigation_e94190 {  background-position: -40px -280px ; }
+.token.small.cottage.cottage_e94190 {  background-position: -60px -280px ; }
+.token.small.tastingRoom.tastingRoom_e94190 {  background-position: -80px -280px ; }
+.token.small.mediumCellar.mediumCellar_e94190 {  background-position: -100px -280px ; }
+.token.small.largeCellar.largeCellar_e94190 {  background-position: -120px -280px ; }
+.token.small.yoke.yoke_e94190 {  background-position: -140px -280px ; }
+.token.small.bottle.bottle_e94190 {  background-position: -160px -280px ; }
+.token.small.star.star_e94190 {  background-position: -180px -280px ; }
+.token.small.workerSpecialMan.workerSpecialMan_e94190 {  background-position: -0px -300px ; }
+.token.small.workerSpecialWoman.workerSpecialWoman_e94190 {  background-position: -20px -300px ; }
+.token.small.scoring.scoring_e94190 {  background-position: -40px -300px ; }
+.token.small.rooster.rooster_008000 {  background-position: -60px -300px ; }
+.token.small.worker.worker_008000,.token.small.worker_1.worker_1_008000,.token.small.worker_2.worker_2_008000,.token.small.worker_3.worker_3_008000,.token.small.worker_4.worker_4_008000,.token.small.worker_5.worker_5_008000 {  background-position: -80px -300px ; }
+.token.small.worker_g.worker_g_008000 {  background-position: -100px -300px ; }
+.token.small.trellis.trellis_008000 {  background-position: -120px -300px ; }
+.token.small.windmill.windmill_008000 {  background-position: -140px -300px ; }
+.token.small.irrigation.irrigation_008000 {  background-position: -160px -300px ; }
+.token.small.cottage.cottage_008000 {  background-position: -180px -300px ; }
+.token.small.tastingRoom.tastingRoom_008000 {  background-position: -0px -320px ; }
+.token.small.mediumCellar.mediumCellar_008000 {  background-position: -20px -320px ; }
+.token.small.largeCellar.largeCellar_008000 {  background-position: -40px -320px ; }
+.token.small.yoke.yoke_008000 {  background-position: -60px -320px ; }
+.token.small.bottle.bottle_008000 {  background-position: -80px -320px ; }
+.token.small.star.star_008000 {  background-position: -100px -320px ; }
+.token.small.workerSpecialMan.workerSpecialMan_008000 {  background-position: -120px -320px ; }
+.token.small.workerSpecialWoman.workerSpecialWoman_008000 {  background-position: -140px -320px ; }
+.token.small.scoring.scoring_008000 {  background-position: -160px -320px ; }
+.token.small.rooster.rooster_ffffff {  background-position: -180px -320px ; }
+.token.small.worker.worker_ffffff,.token.small.worker_1.worker_1_ffffff,.token.small.worker_2.worker_2_ffffff,.token.small.worker_3.worker_3_ffffff,.token.small.worker_4.worker_4_ffffff,.token.small.worker_5.worker_5_ffffff {  background-position: -0px -340px ; }
+.token.small.worker_g.worker_g_ffffff {  background-position: -20px -340px ; }
+.token.small.trellis.trellis_ffffff {  background-position: -40px -340px ; }
+.token.small.windmill.windmill_ffffff {  background-position: -60px -340px ; }
+.token.small.irrigation.irrigation_ffffff {  background-position: -80px -340px ; }
+.token.small.cottage.cottage_ffffff {  background-position: -100px -340px ; }
+.token.small.tastingRoom.tastingRoom_ffffff {  background-position: -120px -340px ; }
+.token.small.mediumCellar.mediumCellar_ffffff {  background-position: -140px -340px ; }
+.token.small.largeCellar.largeCellar_ffffff {  background-position: -160px -340px ; }
+.token.small.yoke.yoke_ffffff {  background-position: -180px -340px ; }
+.token.small.bottle.bottle_ffffff {  background-position: -0px -360px ; }
+.token.small.star.star_ffffff {  background-position: -20px -360px ; }
+.token.small.workerSpecialMan.workerSpecialMan_ffffff {  background-position: -40px -360px ; }
+.token.small.workerSpecialWoman.workerSpecialWoman_ffffff {  background-position: -60px -360px ; }
+.token.small.scoring.scoring_ffffff {  background-position: -80px -360px ; }
+.token.small.vp7 {  background-position: -0px -380px ; }
+.token.small.grapeRed5 {  background-position: -20px -380px ; }
+.token.small.grapeRed6 {  background-position: -40px -380px ; }
+.token.small.grapeRed7 {  background-position: -60px -380px ; }
+.token.small.grapeRed8 {  background-position: -80px -380px ; }
+.token.small.grapeRed9 {  background-position: -100px -380px ; }
+.token.small.grapeWhite5 {  background-position: -120px -380px ; }
+.token.small.grapeWhite6 {  background-position: -140px -380px ; }
+.token.small.grapeWhite7 {  background-position: -160px -380px ; }
+.token.small.grapeWhite8 {  background-position: -180px -380px ; }
+.token.small.grapeWhite9 {  background-position: -0px -400px ; }
+
+
+/************************************ automa cards *********************************/
+/************************************ automa cards *********************************/
+/************************************ automa cards *********************************/
+.card.automaCard.back {  background-position: -0px -0px ; }
+.card.automaCard {  background-position: -192px -0px ; }
+.card.automaCard .automaCardBarSea3  {  background-position: -384px -0px ; }
+.card.automaCard .automaCardBarSea1  {  background-position: -384px -73px ; }
+.card.automaCard .automaCardBarSea2  {  background-position: -384px -147px ; }
+.card.automaCard .automaCardBarSea4  {  background-position: -384px -220px ; }
+.card.automaCard .automaCardBarSea3.automaCardBarSet1  {  background-position: -576px -0px ; }
+.card.automaCard .automaCardBarSea1.automaCardBarSet1  {  background-position: -576px -73px ; }
+.card.automaCard .automaCardBarSea2.automaCardBarSet1  {  background-position: -576px -147px ; }
+.card.automaCard .automaCardBarSea4.automaCardBarSet1  {  background-position: -576px -220px ; }
+.card.small.automaCard.back {  background-position: -0px -0px ; }
+.card.small.automaCard  {  background-position: -96px -0px ; }
+.card.small.automaCard .automaCardBarSea3  {  background-position: -192px -0px ; }
+.card.small.automaCard .automaCardBarSea1  {  background-position: -192px -37px ; }
+.card.small.automaCard .automaCardBarSea2  {  background-position: -192px -74px ; }
+.card.small.automaCard .automaCardBarSea4  {  background-position: -192px -110px ; }
+.card.small.automaCard .automaCardBarSea3.automaCardBarSet1  {  background-position: -288px -0px ; }
+.card.small.automaCard .automaCardBarSea1.automaCardBarSet1  {  background-position: -288px -37px ; }
+.card.small.automaCard .automaCardBarSea2.automaCardBarSet1  {  background-position: -288px -74px ; }
+.card.small.automaCard .automaCardBarSea4.automaCardBarSet1  {  background-position: -288px -110px ; }
+
+
+
+
+/********************************************* HACKS *********************************************/
+/********************************************* HACKS *********************************************/
+/********************************************* HACKS *********************************************/
+/********************************************* HACKS *********************************************/
+/********************************************* HACKS *********************************************/
+
+/*iphone hacks for wrong text size*/
+@media only screen {
+  body {
+    -webkit-text-size-adjust: 100%;
+  }
+  .vit_iphone_safari .active_slot{
+    touch-action: none;
+  }
+}
+/*iphone portrait hacks for wrong text size*/
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+
+  .vit_iphone_safari, .vit_iphone_safari .label_boardLabels, .vit_iphone_safari .playerBoardLabels, .vit_iphone_safari .label_playerBoardLabels, .vit_iphone_safari .playerboard .building_slot, .playerboard .building_slot .text{
+    -webkit-text-size-adjust: 100% !important;
+    font-size: 50%;
+  }
+  .vit_iphone_safari .card.small .name{
+    font-size: 40%;
+  }
+  .vit_iphone_safari .card.small.longName .name{
+    font-size: 30%;
+  }
+  .vit_iphone_safari .card.small.veryLongName .name{
+    font-size: 25%;
+  }
+  .vit_iphone_safari .card.small .description{
+    font-size: 20%;
+  }
+  .vit_iphone_safari #turn_header{
+    font-size: 70%;
+  }
+  .vit_iphone_safari .playerboard_row_header{
+    font-size: 60%;
+  }
+  .vit_iphone_safari .playerboard_row_header .mamaName,  .vit_iphone_safari .playerboard_row_header .papaName{
+    font-size: 50%;
+  }
+  .vit_iphone_safari .card.automaCard div.automaCardBar{
+    font-size: 50%;
+  }
+  .vit_iphone_safari .history_player{
+    font-size: 40%;
+  }
+  .vit_iphone_safari .history_moment{
+    font-size: 30%;
+  }
+}
