@@ -41,6 +41,9 @@ class BigTwo extends Table
             //    "my_second_game_variant" => 101,
             //      ...
         ));
+
+        $this->cards = self::getNew("module.common.deck");
+        $this->cards->init("card");
     }
 
     protected function getGameName()
@@ -88,6 +91,18 @@ class BigTwo extends Table
         //self::initStat( 'player', 'player_teststat1', 0 );  // Init a player statistics (for all players)
 
         // TODO: setup the initial game situation here
+
+        // Create cards
+        $cards = array();
+        foreach ($this->colors as  $color_id => $color) // spade, heart, diamond, club
+        {
+            for ($value = 2; $value <= 14; $value++)   //  2, 3, 4, ... K, A
+            {
+                $cards[] = array('type' => $color_id, 'type_arg' => $value, 'nbr' => 1);
+            }
+        }
+
+        $this->cards->createCards($cards, 'deck');
 
 
         // Activate first player (which is in general a good idea :) )
@@ -146,36 +161,6 @@ class BigTwo extends Table
     /*
         In this space, you can put any utility methods useful for your game logic
     */
-
-    // Return players => direction (N/S/E/W) from the point of view
-    //  of current player (current player must be on south)
-    function getPlayersToDirection()
-    {
-        $result = array();
-
-        $players = self::loadPlayersBasicInfos();
-        $nextPlayer = self::createNextPlayerTable(array_keys($players));
-
-        $current_player = self::getCurrentPlayerId();
-
-        $directions = array('S', 'W', 'N', 'E');
-
-        if (!isset($nextPlayer[$current_player])) {
-            // Spectator mode: take any player for south
-            $player_id = $nextPlayer[0];
-            $result[$player_id] = array_shift($directions);
-        } else {
-            // Normal mode: current player is on south
-            $player_id = $current_player;
-            $result[$player_id] = array_shift($directions);
-        }
-
-        while (count($directions) > 0) {
-            $player_id = $nextPlayer[$player_id];
-            $result[$player_id] = array_shift($directions);
-        }
-        return $result;
-    }
 
 
 
@@ -250,6 +235,27 @@ class BigTwo extends Table
         Here, you can create methods defined as "game state actions" (see "action" property in states.inc.php).
         The action method of state X is called everytime the current game state is set to X.
     */
+
+    function stNewHand()
+    {
+        // Take back all cards (from any location => null) to deck
+        $this->cards->moveAllCardsInLocation(null, "deck");
+        $this->cards->shuffle('deck');
+
+        // Deal 13 cards to each players
+        // Create deck, shuffle it and give 13 initial cards
+        $players = self::loadPlayersBasicInfos();
+        foreach ($players as $player_id => $player) {
+            $cards = $this->cards->pickCards(13, 'deck', $player_id);
+
+            // Notify player about his cards
+            self::notifyPlayer($player_id, 'newHand', '', array(
+                'cards' => $cards
+            ));
+        }
+
+        $this->gamestate->nextState("");
+    }
 
     /*
 

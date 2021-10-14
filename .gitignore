@@ -2,3 +2,6 @@
 img/
 .DS_Store
 node_modules/
+.bash_logout
+.bashrc
+.profile

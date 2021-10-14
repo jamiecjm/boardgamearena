@@ -41,20 +41,22 @@ class view_bigtwo_bigtwo extends game_view
 
     /*********** Place your code below:  ************/
 
-    $player_to_dir = $this->game->getPlayersToDirection();
+    $template = self::getGameName() . "_" . self::getGameName();
 
-    $this->page->begin_block("hearts_hearts", "player");
-    foreach ($player_to_dir as $player_id => $dir) {
-      if ($player_id != $this->game->getCurrentPlayerId()) {
-        $this->page->insert_block("player", array(
-          "PLAYER_ID" => $player_id,
-          "PLAYER_NAME" => $players[$player_id]['player_name'],
-          "PLAYER_COLOR" => $players[$player_id]['player_color'],
-          "DIR" => $dir
-        ));
-      }
+    $directions = array('S', 'W', 'N', 'E');
+
+    // this will inflate our player block with actual players data
+    $this->page->begin_block($template, "player");
+    foreach ($players as $player_id => $info) {
+      $dir = array_shift($directions);
+      $this->page->insert_block("player", array(
+        "PLAYER_ID" => $player_id,
+        "PLAYER_NAME" => $players[$player_id]['player_name'],
+        "PLAYER_COLOR" => $players[$player_id]['player_color'],
+        "DIR" => $dir
+      ));
     }
-
+    // this will make our My Hand text translatable
     $this->tpl['MY_HAND'] = self::_("My hand");
 
 
