@@ -15,29 +15,29 @@
 
 /*
     This is the CSS stylesheet of your game User Interface.
-    
+
     Styles defined on this file will be applied to the HTML elements you define in your
     HTML template (oceans_oceans.tpl), and to HTML elements you create dynamically
     (in oceans.js).
-    
+
     Usually, you are using CSS to:
-    
+
     1°) define the overall layout of your game
         (ex: place the board on the top left, place player's hand beside, place the deck on the right, ...).
 
     2°) create your CSS-sprites:
         All images of your games should be gathered into a small number of image files. Then, using
-        background-image and background-position CSS properties, you create HTML blocks that can 
+        background-image and background-position CSS properties, you create HTML blocks that can
         display these images correctly (see example below).
-    
+
     3°) ... anything else:
         It is really easy to add and remove CSS classes dynamically from your Javascript with
         dojo.addClass and dojo.removeClass. It is also easy to check if an element has a class
         (dojo.hasClass) or to get all elements with a specific class (dojo.query). This is why,
         very often, using CSS classes for the logic of your user interface allow you to do complex
         thing easily.
-        
-        
+
+
      Note: on the production platform, this file will be compressed and comments will be removed.
            Consequently, don't hesitate to put as many comments as necessary.
 */
@@ -67,6 +67,95 @@
     }
 */
 
+:root {
+    --scale: 3;
+}
 
+#main {
+    text-align: center;
+}
 
+#main > div {
+    display: inline-block;
+}
 
+#reef {
+    background-image: url(./img/reefBoard.png);
+    background-size: 100%;
+    width: calc(1752px / var(--scale));
+    height: calc(1752px / var(--scale));
+}
+
+#species_boards {
+    background-image: url(./img/speciesboards.png);
+    background-size: 100%;
+    width: 111px;
+    height: 438px;
+}
+
+#ocean {
+    display: inline-block;
+    background-image: url(./img/oceanBoards.png);
+    background-size: 100%;
+    width: calc(2505px / var(--scale));
+    height: calc(1785px / var(--scale));
+    position: relative;
+}
+
+.scenario_cards {
+    position: absolute;
+    bottom: 10px;
+    background-image: url('./img/scenarioCards100.png');
+    background-size: calc(5626px / 1.5);
+    width: calc(375px / 1.5);
+    height: calc(244px / 1.5);
+    border-radius: 10px;
+}
+
+#scenario_card_1 {
+    left: 14px;
+}
+
+#scenario_card_2 {
+    left: calc(calc(375px / 1.5) + calc(14px * 3));
+    background-position: calc(375px / -1.5 * 1) 0;
+}
+
+#deck {
+    text-align: center;
+}
+
+#deck > div {
+    display: inline-block;
+    margin: 10px 30px;
+}
+
+.cards {
+    display: inline-block;
+    height: calc(525px / 2);
+    width: calc(375px / 2);
+    background-size: calc(5625px / 2);
+    background-repeat: no-repeat;
+    border-radius: 10px;
+}
+
+.surface_cards {
+    background-image: url(./img/surfaceCards100.png);
+}
+
+#surface_card_back {
+    background-position: calc(375px / -2 * 12) 0px;
+}
+
+.deep_cards {
+    background-image: url(./img/deepCards100.png);
+}
+
+#deep_card_back {
+    background-position: calc(375px / -2 * 14) calc(525px / -2 * 5);
+}
+
+/* temp */
+#deep_card_2 {
+    background-position: calc(375px / -2 * 1) 0;
+}
