@@ -27,7 +27,8 @@
 
 <div id="oceans_board">
     <div id="main">
-        <div id="reef"></div>
+        <div id="reef">
+        </div>
         <!-- <div id="species_boards"></div> -->
         <div id="ocean">
             <div id="scenario_card_1" class="scenario_cards"></div>
@@ -37,7 +38,7 @@
     <div id="deck">
         <div id="surface_deck">
             <div id="surface_card_back" class="cards surface_cards"></div>
-            <div id="surface_card" class="cards surface_cards"></div>
+            <div id="surface_card"></div>
         </div>
         <div id="deep_deck">
             <div id="deep_card_back" class="cards deep_cards"></div>
@@ -57,6 +58,8 @@
 var jstpl_some_game_item='<div class="my_game_item" id="my_game_item_${MY_ITEM_ID}"></div>';
 
 */
+
+var jstpl_discardSurface = '<div class="cards surface_cards" style="background-position:-${x}px 0px"></div>';
 
 </script>
 

@@ -68,7 +68,24 @@
 */
 
 :root {
-    --scale: 3;
+    --ocean-scale: 0.25;
+    --reef-width: calc(1752px * var(--ocean-scale));
+    --reef-height: calc(1752px * var(--ocean-scale));
+    --reef-img: url(./img/reef_board_050.png);
+    --ocean-width: calc(2505px * var(--ocean-scale));
+    --ocean-height: calc(1785px * var(--ocean-scale));
+    --ocean-img: url(./img/ocean_board_050.png);
+    --scenario-cards-scale: 0.5;
+    --scenario-cards-width: calc(375px * var(--scenario-cards-scale));
+    --scenario-cards-height: calc(244px * var(--scenario-cards-scale));
+    --scenario-cards-background-size: calc(5626px * var(--scenario-cards-scale));
+    --scenario-cards-img: url(./img/scenario_cards_100.png);
+    --cards-scale: 0.4;
+    --cards-height: calc(525px * var(--cards-scale));
+    --cards-width: calc(375px * var(--cards-scale));
+    --cards-background-size: calc(5625px * var(--cards-scale));
+    --deep-cards-img: url(./img/deep_cards_080.png);
+    --surface-cards-img: url(./img/surface_cards_080.png);
 }
 
 #main {
@@ -80,10 +97,11 @@
 }
 
 #reef {
-    background-image: url(./img/reefBoard.png);
+    background-image: var(--reef-img);
     background-size: 100%;
-    width: calc(1752px / var(--scale));
-    height: calc(1752px / var(--scale));
+    width: var(--reef-width);
+    height: var(--reef-height);
+    margin-bottom: 4.125px;
 }
 
 #species_boards {
@@ -95,30 +113,31 @@
 
 #ocean {
     display: inline-block;
-    background-image: url(./img/oceanBoards.png);
+    background-image: var(--ocean-img);
     background-size: 100%;
-    width: calc(2505px / var(--scale));
-    height: calc(1785px / var(--scale));
+    width: var(--ocean-width);
+    height: var(--ocean-height);
     position: relative;
 }
 
 .scenario_cards {
     position: absolute;
     bottom: 10px;
-    background-image: url('./img/scenarioCards100.png');
-    background-size: calc(5626px / 1.5);
-    width: calc(375px / 1.5);
-    height: calc(244px / 1.5);
+    background-image: var(--scenario-cards-img);
+    background-size: var(--scenario-cards-background-size);
+    width: var(--scenario-cards-width);
+    height: var(--scenario-cards-height);
     border-radius: 10px;
 }
 
 #scenario_card_1 {
-    left: 14px;
+    left: 11px;
 }
 
+/* temp */
 #scenario_card_2 {
-    left: calc(calc(375px / 1.5) + calc(14px * 3));
-    background-position: calc(375px / -1.5 * 1) 0;
+    left: calc(var(--scenario-cards-width) + calc(11px * 3));
+    background-position: calc(var(--scenario-cards-width) * -1) 0;
 }
 
 #deck {
@@ -132,30 +151,34 @@
 
 .cards {
     display: inline-block;
-    height: calc(525px / 2);
-    width: calc(375px / 2);
-    background-size: calc(5625px / 2);
+    height: var(--cards-height);
+    width: var(--cards-width);
+    background-size: var(--cards-background-size);
     background-repeat: no-repeat;
     border-radius: 10px;
 }
 
 .surface_cards {
-    background-image: url(./img/surfaceCards100.png);
+    background-image: var(--surface-cards-img);
+}
+
+#surface_deck > div {
+    display: inline-block;
 }
 
 #surface_card_back {
-    background-position: calc(375px / -2 * 12) 0px;
+    background-position: calc(var(--cards-width) * -12) 0px;
 }
 
 .deep_cards {
-    background-image: url(./img/deepCards100.png);
+    background-image: var(--deep-cards-img);
 }
 
 #deep_card_back {
-    background-position: calc(375px / -2 * 14) calc(525px / -2 * 5);
+    background-position: calc(var(--cards-width) * -14) calc(var(--cards-height) * -5);
 }
 
 /* temp */
 #deep_card_2 {
-    background-position: calc(375px / -2 * 1) 0;
+    background-position: calc(var(--cards-width) * -1) 0;
 }
