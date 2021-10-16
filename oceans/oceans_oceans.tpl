@@ -31,8 +31,8 @@
         </div>
         <!-- <div id="species_boards"></div> -->
         <div id="ocean">
-            <div id="scenario_card_1" class="scenario_cards"></div>
-            <div id="scenario_card_2" class="scenario_cards"></div>
+            <div id="scenario_card_1"></div>
+            <div id="scenario_card_2"></div>
         </div>
     </div>
     <div id="deck">
@@ -60,6 +60,8 @@ var jstpl_some_game_item='<div class="my_game_item" id="my_game_item_${MY_ITEM_I
 */
 
 var jstpl_discardSurface = '<div class="cards surface_cards" style="background-position:-${x}px 0px"></div>';
+var jstpl_oceanZone1Scenario = '<div class="scenario_cards" style="background-position:-${x}px -${y}px"></div>';
+var jstpl_oceanZone2Scenario = '<div class="scenario_cards" style="background-position:-${x}px -${y}px"></div>';
 
 </script>
 

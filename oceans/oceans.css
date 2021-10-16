@@ -121,8 +121,6 @@
 }
 
 .scenario_cards {
-    position: absolute;
-    bottom: 10px;
     background-image: var(--scenario-cards-img);
     background-size: var(--scenario-cards-background-size);
     width: var(--scenario-cards-width);
@@ -132,12 +130,14 @@
 
 #scenario_card_1 {
     left: 11px;
+    position: absolute;
+    bottom: 10px;
 }
 
-/* temp */
 #scenario_card_2 {
     left: calc(var(--scenario-cards-width) + calc(11px * 3));
-    background-position: calc(var(--scenario-cards-width) * -1) 0;
+    position: absolute;
+    bottom: 10px;
 }
 
 #deck {

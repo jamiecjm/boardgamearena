@@ -143,3 +143,207 @@ $this->surfaceCards = array(
     "gains" => 3
   ),
 );
+
+$this->scenarioCards = array(
+  2001 => array(
+    "title" => clienttranslate("Abundance"),
+    "description" => clienttranslate("Traits with gains get [Gain +1]"),
+    "type" => null
+  ),
+  2002 => array(
+    "title" => clienttranslate("Asteroid Impact"),
+    "description" => clienttranslate("Species without a Deep trait lose 3 population to the Reef."),
+    "type" => clienttranslate("Event — Aggressive — Complex")
+  ),
+  2003 => array(
+    "title" => clienttranslate("Biodiverse Reef"),
+    "description" => clienttranslate("Species get forage 2."),
+    "type" => null
+  ),
+  2004 => array(
+    "title" => clienttranslate("Contagious Outbreak"),
+    "description" => clienttranslate("After a species overpopulates, adjacent species lose 3 population to the Reef."),
+    "type" => clienttranslate("Aggressive — Complex")
+  ),
+  2005 => array(
+    "title" => clienttranslate("Contagious Proximity"),
+    "description" => clienttranslate("Species store 3 less population on their species boards."),
+    "type" => clienttranslate("Complex")
+  ),
+  2006 => array(
+    "title" => clienttranslate("Degenerative Virus"),
+    "description" => clienttranslate("During aging, choose a species to age an additional time."),
+    "type" => null
+  ),
+  2007 => array(
+    "title" => clienttranslate("Detritus"),
+    "description" => clienttranslate("Players place 2 population from their score pile into the Reef after a migrate action is taken."),
+    "type" => null
+  ),
+  2008 => array(
+    "title" => clienttranslate("Epizootic"),
+    "description" => clienttranslate("Species go extinct when they overpopulate. Place all population in the Reef."),
+    "type" => clienttranslate("Complex 2")
+  ),
+  2009 => array(
+    "title" => clienttranslate("Fertile"),
+    "description" => clienttranslate("New species gain 2."),
+    "type" => null
+  ),
+  2010 => array(
+    "title" => clienttranslate("Food Surge"),
+    "description" => clienttranslate("Species double their population. Take from any Ocean zone. "),
+    "type" => clienttranslate("Event — Complex 2")
+  ),
+  2011 => array(
+    "title" => clienttranslate("Genetic Diversity"),
+    "description" => clienttranslate("The maximum number of traits per species is increased by one."),
+    "type" => null
+  ),
+  2012 => array(
+    "title" => clienttranslate("Inhospitable Environment"),
+    "description" => clienttranslate("Aging +1"),
+    "type" => clienttranslate("Complex")
+  ),
+  2013 => array(
+    "title" => clienttranslate("Inhospitable Environment"),
+    "description" => clienttranslate("Aging +1"),
+    "type" => clienttranslate("Complex")
+  ),
+  2014 => array(
+    "title" => clienttranslate("Inhospitable Environment"),
+    "description" => clienttranslate("Aging +2"),
+    "type" => clienttranslate("Complex 2")
+  ),
+  2015 => array(
+    "title" => clienttranslate("Large Predators"),
+    "description" => clienttranslate("Species get [Attack 2]."),
+    "type" => clienttranslate("Aggressive")
+  ),
+  2016 => array(
+    "title" => clienttranslate("Long Haul Migration"),
+    "description" => clienttranslate("Species may forage from any Ocean zone."),
+    "type" => null
+  ),
+  2017 => array(
+    "title" => clienttranslate("Paradigm Shift"),
+    "description" => clienttranslate("Species with the most population lose all population to the Reef."),
+    "type" => clienttranslate("Event — Aggressive — Complex")
+  ),
+  2018 => array(
+    "title" => clienttranslate("Pathogenic Immunity"),
+    "description" => clienttranslate("Species never overpopulate."),
+    "type" => null
+  ),
+  2019 => array(
+    "title" => clienttranslate("Population Explosion"),
+    "description" => clienttranslate("Every [Gain] triggers."),
+    "type" => clienttranslate("Event")
+  ),
+  2020 => array(
+    "title" => clienttranslate("Prosperity"),
+    "description" => clienttranslate("Species may store 9 extra population on their species boards."),
+    "type" => null
+  ),
+  2021 => array(
+    "title" => clienttranslate("Protective Growth"),
+    "description" => clienttranslate("Species gain 2 after they evolve a defensive trait."),
+    "type" => null
+  ),
+  2022 => array(
+    "title" => clienttranslate("Protective Shells"),
+    "description" => clienttranslate("Species get [Defense 2]."),
+    "type" => null
+  ),
+  2023 => array(
+    "title" => clienttranslate("Shallow Gene Pool"),
+    "description" => clienttranslate("The maximum number of traits per species is reduced by one."),
+    "type" => clienttranslate("Complex")
+  ),
+  2024 => array(
+    "title" => clienttranslate("Solar Radiation"),
+    "description" => clienttranslate("After each aging phase, species without a Deep trait lose 1 population to the Reef."),
+    "type" => clienttranslate("Complex 2")
+  ),
+  2025 => array(
+    "title" => clienttranslate("Thermal Currents"),
+    "description" => clienttranslate("On your turn, you may evolve traits directly from the Gene Pool."),
+    "type" => clienttranslate("Complex")
+  ),
+  2026 => array(
+    "title" => clienttranslate("Aggressive Environment"),
+    "description" => clienttranslate("Species with 0 population may be attacked. They immediately go extinct before any traits trigger."),
+    "type" => clienttranslate("Aggressive 3")
+  ),
+  2027 => array(
+    "title" => clienttranslate("Coral Bleaching"),
+    "description" => clienttranslate("After your aging phase, place 2 population from the Reef onto any Ocean zone."),
+    "type" => null
+  ),
+  2028 => array(
+    "title" => clienttranslate("Evolutionary Arms Race"),
+    "description" => clienttranslate("Species may not attack a target whose [Attack] or [Forage] is greater than their own [Attack]."),
+    "type" => null
+  ),
+  2029 => array(
+    "title" => clienttranslate("Horizontal Gene Transfer"),
+    "description" => clienttranslate("Before your feeding phase, you may swap one of your traits with a trait on an adjacent species."),
+    "type" => clienttranslate("Aggressive 2 — Complex 2")
+  ),
+  2030 => array(
+    "title" => clienttranslate("Hostile Conditions"),
+    "description" => clienttranslate("Aging occurs for the active player and the player to their right."),
+    "type" => clienttranslate("Aggressive 2 — Complex 2")
+  ),
+  2031 => array(
+    "title" => clienttranslate("Hostile Environment"),
+    "description" => clienttranslate("Aging +3"),
+    "type" => clienttranslate("Complex 4")
+  ),
+  2032 => array(
+    "title" => clienttranslate("Lazy Creator"),
+    "description" => clienttranslate("Before the game, decide as a group what this card says."),
+    "type" => clienttranslate("Event (maybe) — Complex 3")
+  ),
+  2033 => array(
+    "title" => clienttranslate("Mass Migration"),
+    "description" => clienttranslate("Slide the leftmost species of each player to the opponent on their left."),
+    "type" => clienttranslate("Event — Aggressive")
+  ),
+  2034 => array(
+    "title" => clienttranslate("Parallel Universe"),
+    "description" => clienttranslate("On your turn, numbers on traits can be treated as 1 higher or 1 lower."),
+    "type" => clienttranslate("Complex 4")
+  ),
+  2035 => array(
+    "title" => clienttranslate("Prescient Mutations"),
+    "description" => clienttranslate("During the next player’s turn, you may exchange 1 Surface card in your hand for 1 card in the discard
+    pile."),
+    "type" => clienttranslate("Complex 2")
+  ),
+  2036 => array(
+    "title" => clienttranslate("Radiation Blast"),
+    "description" => clienttranslate("Players shuffle the traits on their species and play them randomly on their species one at a time."),
+    "type" => clienttranslate("Event")
+  ),
+  2037 => array(
+    "title" => clienttranslate("Schadenfreude"),
+    "description" => clienttranslate("When a species goes extinct, each other player’s species gain 1."),
+    "type" => clienttranslate("Complex")
+  ),
+  2038 => array(
+    "title" => clienttranslate("Shallow Reef"),
+    "description" => clienttranslate("Species lose 2 population to the Reef after foraging."),
+    "type" => null
+  ),
+  2039 => array(
+    "title" => clienttranslate("Snowball Earth"),
+    "description" => clienttranslate("The [Attack] and [Forage] of every trait is reduced by 1."),
+    "type" => clienttranslate("Complex")
+  ),
+  2040 => array(
+    "title" => clienttranslate("Uber Hostile Environment"),
+    "description" => clienttranslate("Aging happens to every species in play."),
+    "type" => clienttranslate("Aggressive 3 — Complex 3")
+  )
+);

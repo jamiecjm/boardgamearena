@@ -20,10 +20,12 @@
 
 require_once(APP_GAMEMODULE_PATH . 'module/table/table.game.php');
 
+define("DECK_SCENARIO", 'deckScenario');
+define("OCEAN_ZONE1_SCENARIO", 'oceanZone1Scenario');
+define("OCEAN_ZONE2_SCENARIO", 'oceanZone2Scenario');
 define("DECK_SURFACE", 'deckSurface');
 define("DISCARD_SURFACE", 'discardSurface');
 define("DECK_DEEP", 'deckDeep');
-define("DECK_SCENARIO", 'deckScenario');
 
 class oceans extends Table
 {
@@ -96,12 +98,22 @@ class oceans extends Table
 
         // TODO: setup the initial game situation here
 
+        // loop over scenario cards
+        $cards = array();
+        foreach ($this->scenarioCards as $key => $value) {
+            $cards[] = array('type' => 'scenarioCard', 'type_arg' => $key, 'nbr' => 1);
+        }
+        $this->cards->createCards($cards, DECK_SCENARIO);
+        $this->cards->shuffle(DECK_SCENARIO);
+        $this->cards->pickCardForLocation(DECK_SCENARIO, OCEAN_ZONE1_SCENARIO);
+        $this->cards->pickCardForLocation(DECK_SCENARIO, OCEAN_ZONE2_SCENARIO);
+
         // loop over surface cards
         $cards = array();
         $migrations = array(5, 6, 7, 7, 8, 8, 9, 9, 10, 11);
         foreach ($this->surfaceCards as $key => $value) {
             foreach ($migrations as $migration) {
-                $cards[] = array('type' => 'surfaceCard', 'type_arg' => $this->getSurfaceType($value['type'], $migration), 'nbr' => 1);
+                $cards[] = array('type' => 'surfaceCard', 'type_arg' => $this->getSurfaceTypeArg($key, $migration), 'nbr' => 1);
             }
         }
         $this->cards->createCards($cards, DECK_SURFACE);
@@ -153,8 +165,11 @@ class oceans extends Table
 
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
 
-        $result[DECK_SURFACE] = $this->cards->getCardsInLocation(DECK_SURFACE);
+        $result['surfaceCards'] = $this->surfaceCards;
+
         $result[DISCARD_SURFACE] = $this->cards->getCardOnTop(DISCARD_SURFACE);
+        $result[OCEAN_ZONE1_SCENARIO] = $this->cards->getCardOnTop(OCEAN_ZONE1_SCENARIO);
+        $result[OCEAN_ZONE2_SCENARIO] = $this->cards->getCardOnTop(OCEAN_ZONE2_SCENARIO);
 
         return $result;
     }
@@ -185,9 +200,11 @@ class oceans extends Table
         In this space, you can put any utility methods useful for your game logic
     */
 
-    function getSurfaceType($type, $migration)
+    // key + migration value
+    // Example: 1001005
+    function getSurfaceTypeArg($key, $migration)
     {
-        return strval(100 + $type) . strval(100 + $migration);
+        return strval($key * 1000 + $migration);
     }
 
 

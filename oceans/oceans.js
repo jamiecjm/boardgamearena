@@ -16,8 +16,10 @@
  */
 
  const NUM_OF_CARDS_PER_ROW = 15;
- const CARD_WIDTH = 375 * 0.4
- const CARD_HEIGHT = 525 * 0.4
+ const CARD_WIDTH = 375 * 0.4;
+ const CARD_HEIGHT = 525 * 0.4;
+ const SCENARIO_CARD_WIDTH = 375 * 0.5;
+ const SCENARIO_CARD_HEIGHT = 244 * 0.5;
 
 define([
     "dojo","dojo/_base/declare",
@@ -63,14 +65,30 @@ function (dojo, declare) {
             }
 
             // TODO: Set up your game interface here, according to "gamedatas"
+            this.surfaceCards = gamedatas['surfaceCards'];
+
+            // display scenario cards
+            const oceanZone1Scenario = gamedatas['oceanZone1Scenario'];
+            const oceanZone2Scenario = gamedatas['oceanZone2Scenario'];
+            dojo.place(
+                this.format_block( 'jstpl_oceanZone1Scenario', {
+                    x: SCENARIO_CARD_WIDTH*((Number(oceanZone1Scenario.type_arg) - 2001) % NUM_OF_CARDS_PER_ROW),
+                    y: SCENARIO_CARD_HEIGHT*Math.floor((Number(oceanZone1Scenario.type_arg) - 2001) / NUM_OF_CARDS_PER_ROW),
+                } ), 'scenario_card_1' );
+            dojo.place(
+                this.format_block( 'jstpl_oceanZone2Scenario', {
+                    x: SCENARIO_CARD_WIDTH*((Number(oceanZone2Scenario.type_arg) - 2001) % NUM_OF_CARDS_PER_ROW),
+                    y: SCENARIO_CARD_HEIGHT*Math.floor((Number(oceanZone2Scenario.type_arg) - 2001) / NUM_OF_CARDS_PER_ROW),
+                } ), 'scenario_card_2' );
 
             // display discardSurface pile
             const discardSurface = gamedatas['discardSurface'];
-            const locationOnSprite = this.getSurfaceType(discardSurface.type_arg);
+            const discardSurfaceKey = this.getSurfaceKey(discardSurface.type_arg);
+            const discardSurfaceInfo = gamedatas['surfaceCards'][discardSurfaceKey];
             const migrationNumber = this.getSurfaceMigration(discardSurface.type_arg);
             dojo.place(
                 this.format_block( 'jstpl_discardSurface', {
-                    x: CARD_WIDTH*(locationOnSprite - 1),
+                    x: CARD_WIDTH*(discardSurfaceInfo.type - 1),
                 } ), 'surface_card' );
 
             // Setup game notifications to handle (see "setupNotifications" method below)
@@ -172,12 +190,12 @@ function (dojo, declare) {
 
         */
 
-        getSurfaceType(type_arg){
-            return Number(type_arg.slice(0,3)) - 100;
+        getSurfaceKey(type_arg){
+            return Number(type_arg.slice(0,4));
         },
 
         getSurfaceMigration(type_arg){
-            return Number(type_arg.slice(3,6)) - 100;
+            return Number(type_arg.slice(5,7));
         },
 
 
