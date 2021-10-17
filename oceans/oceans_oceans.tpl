@@ -28,16 +28,28 @@
 <div id="oceans_board">
     <div id="main">
         <div id="reef">
+            <div id="reef_population_count" class="counter population_count whiteblock"></div>
         </div>
         <!-- <div id="species_boards"></div> -->
         <div id="ocean">
-            <div id="scenario_card_1"></div>
-            <div id="scenario_card_2"></div>
+            <div id="ocean_zone1">
+                <div id="ocean_zone1_population_count" class="counter population_count whiteblock"></div>
+                <div id="scenario_card_1"></div>
+            </div>
+            <div id="ocean_zone2">
+                <div id="ocean_zone2_population_count" class="counter population_count whiteblock"></div>
+                <div id="scenario_card_2"></div>
+            </div>
+            <div id="ocean_zone3">
+                <div id="ocean_zone3_population_count" class="counter population_count whiteblock"></div>
+            </div>
         </div>
     </div>
     <div id="deck">
         <div id="surface_deck">
-            <div id="surface_card_back" class="cards surface_cards"></div>
+            <div id="surface_card_back" class="cards surface_cards">
+                <div id="surface_deck_count" class="counter deck_count whiteblock"></div>
+            </div>
             <div id="surface_card"></div>
         </div>
         <div id="deep_deck">

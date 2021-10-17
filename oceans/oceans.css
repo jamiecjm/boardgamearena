@@ -90,10 +90,10 @@
 
 #main {
     text-align: center;
-}
-
-#main > div {
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 #reef {
@@ -102,13 +102,7 @@
     width: var(--reef-width);
     height: var(--reef-height);
     margin-bottom: 4.125px;
-}
-
-#species_boards {
-    background-image: url(./img/speciesboards.png);
-    background-size: 100%;
-    width: 111px;
-    height: 438px;
+    margin-right: 10px;
 }
 
 #ocean {
@@ -117,7 +111,15 @@
     background-size: 100%;
     width: var(--ocean-width);
     height: var(--ocean-height);
+    display: flex;
+    flex-direction: row;
+}
+
+#ocean > div {
     position: relative;
+    height: 100%;
+    width: calc(100% / 3);
+    flex: 1;
 }
 
 .scenario_cards {
@@ -128,25 +130,23 @@
     border-radius: 10px;
 }
 
-#scenario_card_1 {
+#scenario_card_1, #scenario_card_2 {
     left: 11px;
-    position: absolute;
-    bottom: 10px;
-}
-
-#scenario_card_2 {
-    left: calc(var(--scenario-cards-width) + calc(11px * 3));
     position: absolute;
     bottom: 10px;
 }
 
 #deck {
     text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 #deck > div {
-    display: inline-block;
     margin: 10px 30px;
+    display: flex;
+    flex-direction: row;
 }
 
 .cards {
@@ -155,19 +155,25 @@
     width: var(--cards-width);
     background-size: var(--cards-background-size);
     background-repeat: no-repeat;
-    border-radius: 10px;
 }
 
 .surface_cards {
     background-image: var(--surface-cards-img);
 }
 
-#surface_deck > div {
-    display: inline-block;
+#surface_deck > div, #deep_deck > div {
+    flex: 1;
+    margin: 0 5px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 10px;
 }
 
 #surface_card_back {
     background-position: calc(var(--cards-width) * -12) 0px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .deep_cards {
@@ -181,4 +187,24 @@
 /* temp */
 #deep_card_2 {
     background-position: calc(var(--cards-width) * -1) 0;
+}
+
+.counter {
+    width: 30px;
+    height: 30px;
+    border-radius: 35px;
+    border: 2px solid black;
+    text-align: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.counter > div {
+    font-size: 25px;
+}
+
+.population_count {
+    left: 10px;
 }

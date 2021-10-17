@@ -26,6 +26,12 @@ define("OCEAN_ZONE2_SCENARIO", 'oceanZone2Scenario');
 define("DECK_SURFACE", 'deckSurface');
 define("DISCARD_SURFACE", 'discardSurface');
 define("DECK_DEEP", 'deckDeep');
+define("TOKEN_RESERVE", 'tokenReserve');
+define("TOKEN_POPULATION", 'tokenPopulation');
+define("TOKEN_REEF", 'tokenReef');
+define("TOKEN_OCEAN_ZONE1", 'tokenOceanZone1');
+define("TOKEN_OCEAN_ZONE2", 'tokenOceanZone2');
+define("TOKEN_OCEAN_ZONE3", 'tokenOceanZone3');
 
 class oceans extends Table
 {
@@ -98,27 +104,31 @@ class oceans extends Table
 
         // TODO: setup the initial game situation here
 
-        // loop over scenario cards
+        // Create scenario cards
         $cards = array();
         foreach ($this->scenarioCards as $key => $value) {
             $cards[] = array('type' => 'scenarioCard', 'type_arg' => $key, 'nbr' => 1);
         }
         $this->cards->createCards($cards, DECK_SCENARIO);
+        // Shuffle the Scenario cards and put 1 random Scenario card on the shelf of the 1st and 2nd Ocean zone
         $this->cards->shuffle(DECK_SCENARIO);
         $this->cards->pickCardForLocation(DECK_SCENARIO, OCEAN_ZONE1_SCENARIO);
         $this->cards->pickCardForLocation(DECK_SCENARIO, OCEAN_ZONE2_SCENARIO);
 
-        // loop over surface cards
+        // Create surface cards
         $cards = array();
-        $migrations = array(5, 6, 7, 7, 8, 8, 9, 9, 10, 11);
+        $migrate_numbers = array(5, 6, 7, 7, 8, 8, 9, 9, 10, 11);
         foreach ($this->surfaceCards as $key => $value) {
-            foreach ($migrations as $migration) {
-                $cards[] = array('type' => 'surfaceCard', 'type_arg' => $this->getSurfaceTypeArg($key, $migration), 'nbr' => 1);
+            foreach ($migrate_numbers as $migrate_number) {
+                $cards[] = array('type' => 'surfaceCard', 'type_arg' => $this->getSurfaceTypeArg($key, $migrate_number), 'nbr' => 1);
             }
         }
         $this->cards->createCards($cards, DECK_SURFACE);
+        // Shuffle the Surface deck and deal 6 cards to each player
         $this->cards->shuffle(DECK_SURFACE);
-        $this->cards->pickCardForLocation(DECK_SURFACE, DISCARD_SURFACE);
+        foreach ($players as $player_id => $player) {
+            $this->cards->pickCards(6, DECK_SURFACE, $player_id);
+        }
 
         // // loop over deep cards
         // $cards = array();
@@ -128,13 +138,43 @@ class oceans extends Table
         // $this->cards->createCards( $cards, DECK_DEEP);
         // $this->cards->shuffle( DECK_DEEP);
 
-        // // loop over scenario cards
-        // $cards = array();
-        // foreach ($this->scenarioCards as $key=>$value){
-        //     $cards[] = array('type' =>'scenarioCard', 'type_arg' => $key, 'nbr' => $value['qty']);
-        // }
-        // $this->cards->createCards( $cards, DECK_SCENARIO);
-        // $this->cards->shuffle( DECK_SCENARIO);
+        // Create reserve tokens
+        $reserve_tokens = array();
+        $reserve_tokens[] = array('type' => 'populationToken', 'type_arg' => 4, 'nbr' => 60);
+        $this->cards->createCards($reserve_tokens, TOKEN_RESERVE);
+
+        // Create population tokens
+        // Create a supply of population tokens according to player count
+        $population_tokens = array();
+        $population_tokens[] = array('type' => 'populationToken', 'type_arg' => 1, 'nbr' => 100);
+        $number_of_population_tokens = 100;
+        if (count($players) >= 3) {
+            $population_tokens[] = array('type' => 'populationToken', 'type_arg' => 2, 'nbr' => 20);
+            $number_of_population_tokens = 120;
+        }
+        if (count($players) >= 4) {
+            $population_tokens[] = array('type' => 'populationToken', 'type_arg' => 3, 'nbr' => 20);
+            $number_of_population_tokens = 140;
+        }
+        $this->cards->createCards($population_tokens, TOKEN_POPULATION);
+        $this->cards->shuffle(TOKEN_POPULATION);
+
+        // Roughly divide the supply of population tokens into 4 piles
+        // place each pile into the 4 available locations: the Reef and the 3 Ocean zones
+
+        // Reveal the top card from the Surface deck, and place it face-up to form the discard pile
+        $discard_surface = $this->cards->getCardOnTop(DECK_SURFACE);
+        $this->cards->moveCard($discard_surface['id'], DISCARD_SURFACE);
+
+        // Get the migrate number of the discarded surface card, and
+        $migrate_number = (int)substr($discard_surface['type_arg'], -2);
+        // move that number of population from the Reef into the 3rd Ocean zone
+        $this->cards->pickCardsForLocation(($number_of_population_tokens / 4) - $migrate_number, TOKEN_POPULATION, TOKEN_REEF);
+        // move that number from the 1st Ocean zone to the 3rd Ocean zone
+        $this->cards->pickCardsForLocation(($number_of_population_tokens / 4) - $migrate_number, TOKEN_POPULATION, TOKEN_OCEAN_ZONE1);
+        $this->cards->pickCardsForLocation($number_of_population_tokens / 4, TOKEN_POPULATION, TOKEN_OCEAN_ZONE2);
+        $this->cards->pickCardsForLocation(($number_of_population_tokens / 4) + ($migrate_number * 2), TOKEN_POPULATION, TOKEN_OCEAN_ZONE3);
+
 
 
         // Activate first player (which is in general a good idea :) )
@@ -165,11 +205,20 @@ class oceans extends Table
 
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
 
-        $result['surfaceCards'] = $this->surfaceCards;
+        $result['cards'] = array(
+            'surfaceCards' => $this->surfaceCards,
+            'deckSurfaceCount' => $this->cards->countCardInLocation(DECK_SURFACE),
+            DISCARD_SURFACE => $this->cards->getCardOnTop(DISCARD_SURFACE),
+            OCEAN_ZONE1_SCENARIO => $this->cards->getCardOnTop(OCEAN_ZONE1_SCENARIO),
+            OCEAN_ZONE2_SCENARIO => $this->cards->getCardOnTop(OCEAN_ZONE2_SCENARIO),
+        );
 
-        $result[DISCARD_SURFACE] = $this->cards->getCardOnTop(DISCARD_SURFACE);
-        $result[OCEAN_ZONE1_SCENARIO] = $this->cards->getCardOnTop(OCEAN_ZONE1_SCENARIO);
-        $result[OCEAN_ZONE2_SCENARIO] = $this->cards->getCardOnTop(OCEAN_ZONE2_SCENARIO);
+        $result['tokens'] = array(
+            TOKEN_REEF => $this->cards->getCardsInLocation(TOKEN_REEF),
+            TOKEN_OCEAN_ZONE1 => $this->cards->getCardsInLocation(TOKEN_OCEAN_ZONE1),
+            TOKEN_OCEAN_ZONE2 => $this->cards->getCardsInLocation(TOKEN_OCEAN_ZONE2),
+            TOKEN_OCEAN_ZONE3 => $this->cards->getCardsInLocation(TOKEN_OCEAN_ZONE3)
+        );
 
         return $result;
     }
@@ -200,11 +249,11 @@ class oceans extends Table
         In this space, you can put any utility methods useful for your game logic
     */
 
-    // key + migration value
+    // key + migrate number
     // Example: 1001005
-    function getSurfaceTypeArg($key, $migration)
+    function getSurfaceTypeArg($key, $migrate_number)
     {
-        return strval($key * 1000 + $migration);
+        return strval($key * 1000 + $migrate_number);
     }
 
 
