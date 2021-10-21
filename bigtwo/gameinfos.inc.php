@@ -31,7 +31,7 @@ $gameinfos = array(
     'publisher_website' => '',
 
     // Board Game Geek ID of the publisher
-    'publisher_bgg_id' => 0,
+    'publisher_bgg_id' => 171,
 
     // Board game geek ID of the game
     'bgg_id' => 13597,
@@ -144,7 +144,7 @@ $gameinfos = array(
     //  http://en.doc.boardgamearena.com/Game_meta-information:_gameinfos.inc.php
     //  IMPORTANT: this list should be ORDERED, with the most important tag first.
     //  IMPORTANT: it is mandatory that the FIRST tag is 1, 2, 3 and 4 (= game category)
-    'tags' => array(2),
+    'tags' => array(2, 23),
 
 
     //////// BGA SANDBOX ONLY PARAMETERS (DO NOT MODIFY)

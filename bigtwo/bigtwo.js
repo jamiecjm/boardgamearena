@@ -30,8 +30,8 @@ function (dojo, declare) {
             // Example:
             // this.myGlobalValue = 0;
             this.playerHand = null;
-            this.cardwidth = 72;
-            this.cardheight = 96;
+            this.cardwidth = 70;
+            this.cardheight = 101.625;
 
         },
 
@@ -51,6 +51,7 @@ function (dojo, declare) {
         setup: function( gamedatas )
         {
             console.log( "Starting game setup" );
+            console.log('gamedatas', gamedatas);
 
             // Setting up player boards
             for( var player_id in gamedatas.players )
@@ -66,19 +67,30 @@ function (dojo, declare) {
             this.playerHand = new ebg.stock();
             this.playerHand.create( this, $('myhand'), this.cardwidth, this.cardheight );
             this.playerHand.image_items_per_row = 13;
+            this.playerHand.jstpl_stock_item= "<div id=\"${id}\" class=\"stockitem cards\" style=\"top:${top}px;left:${left}px;width:${width}px;height:${height}px;z-index:${position};background-image:url('${image}');\"></div>";
             dojo.connect( this.playerHand, 'onChangeSelection', this, 'onPlayerHandSelectionChanged' );
 
             // Create cards types:
-            for( var color=1;color<=4;color++ )
+            let weight = 0;
+            for( var value=3;value<=15;value++ )
             {
-                for( var value=2;value<=14;value++ )
+                for( var color=1;color<=4;color++ )
                 {
                     // Build card type id
                     var card_type_id = this.getCardUniqueId( color, value );
-                    this.playerHand.addItemType( card_type_id, card_type_id, g_gamethemeurl+'img/cards.jpg', card_type_id );
+                    this.playerHand.addItemType( card_type_id, weight, g_gamethemeurl+'img/cards.jpg', card_type_id );
+                    weight += 1;
                 }
             }
 
+            // Cards in player's hand
+            for( var i in this.gamedatas.hand )
+            {
+                var card = this.gamedatas.hand[i];
+                var color = card.type;
+                var value = card.type_arg;
+                this.playerHand.addToStockWithId( this.getCardUniqueId( color, value ), card.id );
+            }
 
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
@@ -182,7 +194,7 @@ function (dojo, declare) {
 
         getCardUniqueId: function( color, value )
         {
-            return (color-1)*13+(value-2);
+            return (color-1)*13+(value-3);
         },
 
 

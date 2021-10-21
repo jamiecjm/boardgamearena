@@ -94,16 +94,15 @@ class BigTwo extends Table
 
         // Create cards
         $cards = array();
-        foreach ($this->colors as  $color_id => $color) // spade, heart, diamond, club
+        for ($value = 3; $value <= 15; $value++)   //  3, 4, ... K, A, 2
         {
-            for ($value = 2; $value <= 14; $value++)   //  2, 3, 4, ... K, A
+            foreach ($this->colors as  $color_id => $color) // diamond, club, heart, spade
             {
                 $cards[] = array('type' => $color_id, 'type_arg' => $value, 'nbr' => 1);
             }
         }
 
         $this->cards->createCards($cards, 'deck');
-
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -132,6 +131,9 @@ class BigTwo extends Table
         $result['players'] = self::getCollectionFromDb($sql);
 
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
+
+        // Cards in player hand
+        $result['hand'] = $this->cards->getCardsInLocation('hand', $current_player_id);
 
         return $result;
     }
