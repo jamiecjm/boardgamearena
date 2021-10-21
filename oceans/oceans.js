@@ -16,10 +16,10 @@
  */
 
  const NUM_OF_CARDS_PER_ROW = 15;
- const CARD_WIDTH = 375 * 0.4;
- const CARD_HEIGHT = 525 * 0.4;
- const SCENARIO_CARD_WIDTH = 375 * 0.5;
- const SCENARIO_CARD_HEIGHT = 244 * 0.5;
+ const CARD_WIDTH = 375 * 0.3;
+ const CARD_HEIGHT = 525 * 0.3;
+ const SCENARIO_CARD_WIDTH = 375 * 0.4;
+ const SCENARIO_CARD_HEIGHT = 244 * 0.4;
 
 define([
     "dojo","dojo/_base/declare",
@@ -87,19 +87,54 @@ function (dojo, declare) {
 
             // display discardSurface pile
             const discardSurface = this.cards['discardSurface'];
-            const discardSurfaceKey = this.getSurfaceKey(discardSurface.type_arg);
-            const discardSurfaceInfo = this.cards['surfaceCards'][discardSurfaceKey];
-            const migrateNumber = this.getSurfaceMigrateNumber(discardSurface.type_arg);
+            const discardSurfaceInfo = this.cards['surfaceCards'][discardSurface.type_arg];
             dojo.place(
                 this.format_block( 'jstpl_discardSurface', {
-                    x: CARD_WIDTH*(discardSurfaceInfo.type - 1),
+                    x: CARD_WIDTH*(discardSurfaceInfo.imagePosition - 1),
                 } ), 'surface_card' );
+
+            // display deep deck count
+            dojo.place(`<div>${this.cards['deckDeepCount']}</div>`, 'deep_deck_count' );
+
+            // display the gene pool
+            const deckGenePool1 = this.cards['deckGenePool1'];
+            const deckGenePool2 = this.cards['deckGenePool2'];
+            dojo.place(
+                this.format_block( 'jstpl_genePool', {
+                    x: CARD_WIDTH*((Number(deckGenePool1.type_arg) - 3001) % NUM_OF_CARDS_PER_ROW),
+                    y: CARD_HEIGHT*Math.floor((Number(deckGenePool1.type_arg) - 3001) / NUM_OF_CARDS_PER_ROW),
+                } ), 'deep_card_1' );
+            dojo.place(
+                this.format_block( 'jstpl_genePool', {
+                    x: CARD_WIDTH*((Number(deckGenePool2.type_arg) - 3001) % NUM_OF_CARDS_PER_ROW),
+                    y: CARD_HEIGHT*Math.floor((Number(deckGenePool2.type_arg) - 3001) / NUM_OF_CARDS_PER_ROW),
+                } ), 'deep_card_2' );
+
 
             // display population tokens
             dojo.place(`<div>${Object.keys(this.tokens['tokenReef']).length}</div>`, 'reef_population_count' );
             dojo.place(`<div>${Object.keys(this.tokens['tokenOceanZone1']).length}</div>`, 'ocean_zone1_population_count' );
             dojo.place(`<div>${Object.keys(this.tokens['tokenOceanZone2']).length}</div>`, 'ocean_zone2_population_count' );
             dojo.place(`<div>${Object.keys(this.tokens['tokenOceanZone3']).length}</div>`, 'ocean_zone3_population_count' );
+
+            // Player hand
+            this.playerHand = new ebg.stock();
+            this.playerHand.create( this, $('current_player_hand'), CARD_WIDTH, CARD_HEIGHT);
+            this.playerHand.image_items_per_row = 15;
+            this.playerHand.jstpl_stock_item= "<div id=\"${id}\" class=\"stockitem cards\" style=\"top:${top}px;left:${left}px;width:${width}px;height:${height}px;z-index:${position};background-image:url('${image}');\"></div>";
+
+            // Create surface cards types:
+            for (key in this.cards.surfaceCards) {
+                // Build card type id
+                this.playerHand.addItemType( key, key, g_gamethemeurl+'img/surface_cards_080.png', this.cards.surfaceCards[key].imagePosition - 1 );
+            }
+
+            // Cards in player's hand
+            for( var i in this.gamedatas.hand )
+            {
+                var card = this.gamedatas.hand[i];
+                this.playerHand.addToStockWithId( card.type_arg, card.id );
+            }
 
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
@@ -174,6 +209,11 @@ function (dojo, declare) {
             {
                 switch( stateName )
                 {
+                    case 'playCards':
+                        this.addActionButton('playCardsEvolve', _('Evolve a species'), 'onPlayCardsEvolveClick');
+                        this.addActionButton('playCardsMigrate', _('Migrate'), 'playCardsMigrateClick');
+                        break;
+
 /*
                  Example:
 
@@ -200,12 +240,14 @@ function (dojo, declare) {
 
         */
 
-        getSurfaceKey(type_arg){
-            return Number(type_arg.slice(0,4));
-        },
-
-        getSurfaceMigrateNumber(type_arg){
-            return Number(type_arg.slice(5,7));
+        getCardId(type)
+        {
+            switch (type) {
+                case 'surfaceCard':
+                    return 1;
+                case 'deepCard':
+                    return 2;
+            }
         },
 
 
@@ -222,6 +264,16 @@ function (dojo, declare) {
             _ make a call to the game server
 
         */
+
+        onPlayCardsEvolveClick: function( evt )
+        {
+
+        },
+
+        onPlayCardsMigrateClick: function( evt )
+        {
+
+        },
 
         /* Example:
 

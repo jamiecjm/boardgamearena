@@ -53,9 +53,20 @@
             <div id="surface_card"></div>
         </div>
         <div id="deep_deck">
-            <div id="deep_card_back" class="cards deep_cards"></div>
-            <div id="deep_card_1" class="cards deep_cards"></div>
-            <div id="deep_card_2" class="cards deep_cards"></div>
+            <div id="deep_card_back" class="cards deep_cards">
+                <div id="deep_deck_count" class="counter deck_count whiteblock"></div>
+            </div>
+            <div id="deep_card_1"></div>
+            <div id="deep_card_2"></div>
+        </div>
+    </div>
+    <div class="player_area whiteblock">
+        <div>
+            <div>My hand</div>
+            <div id="current_player_hand"></div>
+        </div>
+        <div>
+            <div>My species</div>
         </div>
     </div>
 </div>
@@ -71,9 +82,10 @@ var jstpl_some_game_item='<div class="my_game_item" id="my_game_item_${MY_ITEM_I
 
 */
 
-var jstpl_discardSurface = '<div class="cards surface_cards" style="background-position:-${x}px 0px"></div>';
-var jstpl_oceanZone1Scenario = '<div class="scenario_cards" style="background-position:-${x}px -${y}px"></div>';
-var jstpl_oceanZone2Scenario = '<div class="scenario_cards" style="background-position:-${x}px -${y}px"></div>';
+const jstpl_discardSurface = '<div class="cards surface_cards" style="background-position:-${x}px 0px"></div>';
+const jstpl_oceanZone1Scenario = '<div class="scenario_cards" style="background-position:-${x}px -${y}px"></div>';
+const jstpl_oceanZone2Scenario = '<div class="scenario_cards" style="background-position:-${x}px -${y}px"></div>';
+const jstpl_genePool = '<div class="cards deep_cards" style="background-position:-${x}px -${y}px"></div>'
 
 </script>
 

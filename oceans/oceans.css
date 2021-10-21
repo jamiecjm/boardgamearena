@@ -68,19 +68,19 @@
 */
 
 :root {
-    --ocean-scale: 0.25;
+    --ocean-scale: 0.2;
     --reef-width: calc(1752px * var(--ocean-scale));
     --reef-height: calc(1752px * var(--ocean-scale));
     --reef-img: url(./img/reef_board_050.png);
     --ocean-width: calc(2505px * var(--ocean-scale));
     --ocean-height: calc(1785px * var(--ocean-scale));
     --ocean-img: url(./img/ocean_board_050.png);
-    --scenario-cards-scale: 0.5;
+    --scenario-cards-scale: 0.4;
     --scenario-cards-width: calc(375px * var(--scenario-cards-scale));
     --scenario-cards-height: calc(244px * var(--scenario-cards-scale));
     --scenario-cards-background-size: calc(5626px * var(--scenario-cards-scale));
     --scenario-cards-img: url(./img/scenario_cards_100.png);
-    --cards-scale: 0.4;
+    --cards-scale: 0.3;
     --cards-height: calc(525px * var(--cards-scale));
     --cards-width: calc(375px * var(--cards-scale));
     --cards-background-size: calc(5625px * var(--cards-scale));
@@ -131,7 +131,7 @@
 }
 
 #scenario_card_1, #scenario_card_2 {
-    left: 11px;
+    left: 8px;
     position: absolute;
     bottom: 10px;
 }
@@ -154,7 +154,8 @@
     height: var(--cards-height);
     width: var(--cards-width);
     background-size: var(--cards-background-size);
-    background-repeat: no-repeat;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 10px;
 }
 
 .surface_cards {
@@ -164,8 +165,6 @@
 #surface_deck > div, #deep_deck > div {
     flex: 1;
     margin: 0 5px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    border-radius: 10px;
 }
 
 #surface_card_back {
@@ -182,6 +181,10 @@
 
 #deep_card_back {
     background-position: calc(var(--cards-width) * -14) calc(var(--cards-height) * -5);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* temp */
@@ -207,4 +210,8 @@
 
 .population_count {
     left: 10px;
+}
+
+.player_area {
+    padding: 30px;
 }
