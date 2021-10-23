@@ -164,6 +164,19 @@ class BigTwo extends Table
         In this space, you can put any utility methods useful for your game logic
     */
 
+    function getLastPlayedCards()
+    {
+        $player_id = $this->getActivePlayerId();
+        $cardsPlayed = 0;
+        for ($i = 0; $i < 4; $i++) {
+            $player = $this->getPlayerBefore($player_id);
+            $cardsPlayed = $this->cards->getCardsInLocation('table', $player['id']);
+            if (count($cardsPlayed) != 0) {
+                break;
+            }
+        }
+        return $cardsPlayed;
+    }
 
 
     //////////////////////////////////////////////////////////////////////////////
@@ -174,6 +187,57 @@ class BigTwo extends Table
         Each time a player is doing some game action, one of the methods below is called.
         (note: each method below must match an input method in bigtwo.action.php)
     */
+
+    function playCards($card_ids)
+    {
+        self::checkAction('playCards');
+        $player_id = self::getActivePlayerId();
+
+        $cards = $this->cards->getCards($card_ids);
+        $lastCardsPlayed = $this->getLastPlayedCards();
+
+        // Check if these cards are in player hands
+        foreach ($cards as $card) {
+            if ($card['location'] != 'hand' || $card['location_arg'] != $player_id)
+                throw new feException(self::_("Some of these cards are not in your hand"));
+        }
+
+        // check cards combination
+
+        // first card or new trick
+        if (count($lastCardsPlayed) == 0) {
+            $discardPile = $this->cards->getCardsInLocation('discard');
+            // first card
+            if (count($discardPile) == 0) {
+                // must have three of diamonds
+                $three_of_diamonds = array_values($this->cards->getCardsOfType(1, 3))[0];
+                if (!in_array($three_of_diamonds, $cards)) {
+                    throw new feException(self::_("You must play the three of diamonds"));
+                }
+            }
+        } else {
+            if (count($cards) != count($lastCardsPlayed))
+                throw new feException(self::_("You must play the same number of cards"));
+
+            // compare cards
+        }
+
+        // discard cards on table
+        $this->cards->moveAllCardsInLocation('table', 'discard', $player_id);
+        // move played cards to table
+        $this->cards->moveCards($card_ids, 'table', $player_id);
+
+        // And notify
+        self::notifyAllPlayers('playCard', clienttranslate('${player_name} plays ${combination}'), array(
+            'i18n' => array('combination'),
+            'card_ids' => $card_ids,
+            'player_id' => $player_id,
+            'player_name' => self::getActivePlayerName(),
+            'combination' => clienttranslate('a single')
+        ));
+
+        $this->gamestate->nextState('playCards');
+    }
 
     /*
 
@@ -256,7 +320,26 @@ class BigTwo extends Table
             ));
         }
 
+        // get the smallest card - 3 of diamonds
+        $three_of_diamonds = array_values($this->cards->getCardsOfType(1, 3))[0];
+        $threeDiamondsCardOwner = $three_of_diamonds['location_arg'];
+        $this->gamestate->changeActivePlayer($threeDiamondsCardOwner);
+
         $this->gamestate->nextState("");
+    }
+
+    function stNextPlayer()
+    {
+
+        $player_id = $this->getActivePlayerId();
+        $cards_left = $this->cards->countCardInLocation('hand', $player_id);
+
+        if ($cards_left == 0) {
+            $this->gamestate->nextState("endGame");
+        } else {
+            $this->activeNextPlayer();
+            $this->gamestate->nextState("nextPlayer");
+        }
     }
 
     /*

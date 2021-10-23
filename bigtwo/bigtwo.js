@@ -31,7 +31,7 @@ function (dojo, declare) {
             // this.myGlobalValue = 0;
             this.playerHand = null;
             this.cardwidth = 70;
-            this.cardheight = 101.625;
+            this.cardheight = 98;
 
         },
 
@@ -68,7 +68,6 @@ function (dojo, declare) {
             this.playerHand.create( this, $('myhand'), this.cardwidth, this.cardheight );
             this.playerHand.image_items_per_row = 13;
             this.playerHand.jstpl_stock_item= "<div id=\"${id}\" class=\"stockitem cards\" style=\"top:${top}px;left:${left}px;width:${width}px;height:${height}px;z-index:${position};background-image:url('${image}');\"></div>";
-            dojo.connect( this.playerHand, 'onChangeSelection', this, 'onPlayerHandSelectionChanged' );
 
             // Create cards types:
             let weight = 0;
@@ -121,10 +120,6 @@ function (dojo, declare) {
 
                 break;
            */
-
-
-            case 'dummmy':
-                break;
             }
         },
 
@@ -165,6 +160,9 @@ function (dojo, declare) {
             {
                 switch( stateName )
                 {
+                    case 'firstPlayerTurn':
+                        this.addActionButton( 'playCards', _('Play cards'), 'onPlayCards' );
+                        break;
 /*
                  Example:
 
@@ -211,10 +209,40 @@ function (dojo, declare) {
             _ make a call to the game server
 
         */
+       onPlayCards: function ()
+       {
+           if( this.checkAction('playCards'))
+           {
+               const items = this.playerHand.getSelectedItems();
+               const playerHand = this.playerHand.getAllItems();
+               console.log('items', items);
 
-        onPlayerHandSelectionChanged: function(  )
-        {
-        },
+               if ( items.length === 0 ) {
+                   return;
+               }
+
+               if (items.length === 4) {
+                   this.showMessage(_("Invalid card combinations"), 'error');
+                   return;
+               }
+
+               // first player must play the three of diamonds
+               const hasThreeOfDiamond = playerHand.find((item) => item.type === 0);
+               if (hasThreeOfDiamond){
+                   const threeOfDiamonds = items.find((item) => item.type === 0);
+                   if (!threeOfDiamonds) {
+                       this.showMessage(_("You must play the three of diamonds"), 'error');
+                       return;
+                   }
+               }
+
+               const cardIds = items.map(item => item.id);
+               console.log('cardIds', cardIds);
+                this.ajaxcall( "/bigtwo/bigtwo/playCards.html", { cards: cardIds.join(','), lock: true }, this, function( result ) {
+                }, function( is_error) { } );
+           }
+       },
+
 
         /* Example:
 
