@@ -33,26 +33,26 @@ $this->card_types = array(
 
 */
 
-$this->colors = array(
+$this->suits = array(
   1 => array(
-    'name' => clienttranslate('diamond'),
-    'nametr' => self::_('diamond')
+    'name' => clienttranslate('diamonds'),
+    'nametr' => self::_('diamonds')
   ),
   2 => array(
-    'name' => clienttranslate('club'),
-    'nametr' => self::_('club')
+    'name' => clienttranslate('clubs'),
+    'nametr' => self::_('clubs')
   ),
   3 => array(
-    'name' => clienttranslate('heart'),
-    'nametr' => self::_('heart')
+    'name' => clienttranslate('hearts'),
+    'nametr' => self::_('hearts')
   ),
   4 => array(
-    'name' => clienttranslate('spade'),
-    'nametr' => self::_('spade')
+    'name' => clienttranslate('spades'),
+    'nametr' => self::_('spades')
   ),
 );
 
-$this->values_label = array(
+$this->ranks_label = array(
   3 => '3',
   4 => '4',
   5 => '5',

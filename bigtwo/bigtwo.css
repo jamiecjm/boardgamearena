@@ -82,35 +82,35 @@
 .playertable {
     position: absolute;
     text-align: center;
-    width: 180px;
+    width: 420;
     height: 130px;
 }
 
 .playertable_N {
     left: 50%;
     top: 0px;
-    margin-left: -90px; /* half of 180 */
+    transform: translateX(-50%);
 }
 .playertable_S {
     left: 50%;
+    transform: translateX(-50%);
     bottom: 0px;
-    margin-left: -90px; /* half of 180 */
 }
 .playertable_W {
     left: 0px;
     top: 50%;
-    margin-top: -55px; /* half of 130 */
+    transform: translateY(-50%);
 }
 .playertable_E {
     right: 0px;
     top: 50%;
-    margin-top: -55px; /* half of 130 */
+    transform: translateY(-50%);
 }
 .playertablecard {
     display: inline-block;
     position: relative;
     margin-top: 5px;
-    width: 72px;
+    width: 400px;
     height: 96px;
 }
 

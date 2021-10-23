@@ -34,7 +34,7 @@ class BigTwo extends Table
         parent::__construct();
 
         self::initGameStateLabels(array(
-            //    "my_first_global_variable" => 10,
+            "last_player_id" => 10,
             //    "my_second_global_variable" => 11,
             //      ...
             //    "my_first_game_variant" => 100,
@@ -94,15 +94,18 @@ class BigTwo extends Table
 
         // Create cards
         $cards = array();
-        for ($value = 3; $value <= 15; $value++)   //  3, 4, ... K, A, 2
+        for ($rank = 3; $rank <= 15; $rank++)   //  3, 4, ... K, A, 2
         {
-            foreach ($this->colors as  $color_id => $color) // diamond, club, heart, spade
+            foreach ($this->suits as  $suit_id => $suit) // diamond, club, heart, spade
             {
-                $cards[] = array('type' => $color_id, 'type_arg' => $value, 'nbr' => 1);
+                $cards[] = array('type' => $suit_id, 'type_arg' => $rank, 'nbr' => 1);
             }
         }
 
         $this->cards->createCards($cards, 'deck');
+        // $this->cards->createCards($cards, 'archive');
+
+        self::setGameStateInitialValue('last_player_id', 0);
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -134,6 +137,7 @@ class BigTwo extends Table
 
         // Cards in player hand
         $result['hand'] = $this->cards->getCardsInLocation('hand', $current_player_id);
+        $result['table'] = $this->cards->getCardsInLocation('table');
 
         return $result;
     }
@@ -166,16 +170,52 @@ class BigTwo extends Table
 
     function getLastPlayedCards()
     {
-        $player_id = $this->getActivePlayerId();
-        $cardsPlayed = 0;
-        for ($i = 0; $i < 4; $i++) {
-            $player = $this->getPlayerBefore($player_id);
-            $cardsPlayed = $this->cards->getCardsInLocation('table', $player['id']);
-            if (count($cardsPlayed) != 0) {
-                break;
-            }
-        }
+        $last_player_id = self::getGameStateValue("last_player_id");
+        $cardsPlayed = $this->cards->getCardsInLocation('table', $last_player_id);
         return $cardsPlayed;
+    }
+
+    function getCardCombination($cards)
+    {
+        $ranks = array_column($cards, "type_arg");
+        $unique_ranks = array_unique($ranks);
+        $suits = array_column($cards, "type");
+        $unique_suits = array_unique($suits);
+        $card_count = count($cards);
+        if ($card_count == 1) {
+            return array(
+                "combination" => "single",
+                "rank" => $unique_ranks[0],
+                "suit" => $unique_suits[0],
+                "description" => $unique_ranks[0] . " of " . $unique_suits[0]
+            );
+        } else if ($card_count == 2) {
+            if (count($unique_ranks) == 1) {
+                return array(
+                    "combination" => "pair",
+                    "rank" => $unique_ranks[0],
+                    "description" => clienttranslate("a pair of " . $unique_ranks[0])
+                );
+            } else {
+                throw new feException(self::_("Invalid card combinations"));
+            }
+        } else if ($card_count == 3) {
+            if (count($unique_ranks) == 1) {
+                return array(
+                    "combination" => "triple",
+                    "rank" => $unique_ranks[0],
+                    "description" => clienttranslate("a triple " . $unique_ranks[0])
+                );
+            } else {
+                throw new feException(self::_("Invalid card combinations"));
+            }
+        } else if ($card_count == 5) {
+            return array(
+                "combination" => "group of 5 cards",
+            );
+        } else {
+            throw new feException(self::_("Invalid card combinations"));
+        }
     }
 
 
@@ -203,6 +243,7 @@ class BigTwo extends Table
         }
 
         // check cards combination
+        $card_combination = $this->getCardCombination($cards);
 
         // first card or new trick
         if (count($lastCardsPlayed) == 0) {
@@ -222,18 +263,21 @@ class BigTwo extends Table
             // compare cards
         }
 
-        // discard cards on table
+        // discard active player's cards on table
         $this->cards->moveAllCardsInLocation('table', 'discard', $player_id);
         // move played cards to table
         $this->cards->moveCards($card_ids, 'table', $player_id);
 
+        self::setGameStateValue("last_player_id", $player_id);
+
         // And notify
-        self::notifyAllPlayers('playCard', clienttranslate('${player_name} plays ${combination}'), array(
+        self::notifyAllPlayers('playCards', clienttranslate('${player_name} plays ${combination}'), array(
             'i18n' => array('combination'),
+            "cards" => $cards,
             'card_ids' => $card_ids,
             'player_id' => $player_id,
             'player_name' => self::getActivePlayerName(),
-            'combination' => clienttranslate('a single')
+            'combination' => $card_combination['description']
         ));
 
         $this->gamestate->nextState('playCards');
@@ -292,6 +336,16 @@ class BigTwo extends Table
         );
     }
     */
+
+    function argPlayerTurn()
+    {
+        $last_played_cards = $this->getLastPlayedCards();
+        $combination = $this->getCardCombination($last_played_cards);
+
+        return array(
+            "combination" => $combination['combination']
+        );
+    }
 
     //////////////////////////////////////////////////////////////////////////////
     //////////// Game state actions
