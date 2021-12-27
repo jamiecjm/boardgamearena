@@ -220,6 +220,9 @@ class oceans extends Table
             TOKEN_OCEAN_ZONE3 => $this->cards->getCardsInLocation(TOKEN_OCEAN_ZONE3)
         );
 
+        // Cards in player hand
+        $result['hand'] = $this->cards->getCardsInLocation('hand');
+
         return $result;
     }
 
