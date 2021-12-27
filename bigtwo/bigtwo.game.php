@@ -233,6 +233,9 @@ class BigTwo extends Table
         self::checkAction('playCards');
         $player_id = self::getActivePlayerId();
 
+        // discard active player's cards on table
+        $this->cards->moveAllCardsInLocation('table', 'discard', $player_id);
+
         $cards = $this->cards->getCards($card_ids);
         $lastCardsPlayed = $this->getLastPlayedCards();
 
@@ -263,8 +266,6 @@ class BigTwo extends Table
             // compare cards
         }
 
-        // discard active player's cards on table
-        $this->cards->moveAllCardsInLocation('table', 'discard', $player_id);
         // move played cards to table
         $this->cards->moveCards($card_ids, 'table', $player_id);
 
@@ -281,6 +282,24 @@ class BigTwo extends Table
         ));
 
         $this->gamestate->nextState('playCards');
+    }
+
+    function pass()
+    {
+        self::checkAction('pass');
+
+        $player_id = self::getActivePlayerId();
+
+        // discard active player's cards on table
+        $this->cards->moveAllCardsInLocation('table', 'discard', $player_id);
+
+        // And notify
+        self::notifyAllPlayers('playCards', clienttranslate('${player_name} passes'), array(
+            'player_id' => $player_id,
+            'player_name' => self::getActivePlayerName()
+        ));
+
+        $this->gamestate->nextState('pass');
     }
 
     /*
@@ -392,6 +411,20 @@ class BigTwo extends Table
             $this->gamestate->nextState("endGame");
         } else {
             $this->activeNextPlayer();
+            $this->gamestate->nextState("nextPlayer");
+        }
+    }
+
+    function stPass()
+    {
+        $player_id = $this->getActivePlayerId();
+        $next_player = $this->getPlayerAfter($player_id);
+        $last_player_id = self::getGameStateValue('last_player_id');
+
+        $this->activeNextPlayer();
+        if ($next_player['player_id'] == $last_player_id) {
+            $this->gamestate->nextState("winTrick");
+        } else {
             $this->gamestate->nextState("nextPlayer");
         }
     }

@@ -69,6 +69,10 @@
 
 /** Table layout **/
 
+#myhand_wrap{
+    text-align: center;
+}
+
 #playertables {
     position: relative;
     width: 100%;

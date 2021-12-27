@@ -115,16 +115,9 @@ $machinestates = array(
         "name" => "pass",
         "description" => "",
         "type" => "game",
+        "action" => "stPass",
         "updateGameProgression" => true,
-        "transitions" => array("nextPlayer" => 31, "winTrick" => 42)
-    ),
-
-    42 => array(
-        "name" => "winTrick",
-        "description" => "",
-        "type" => "game",
-        "updateGameProgression" => true,
-        "transitions" => array("newTrick" => 34)
+        "transitions" => array("nextPlayer" => 31, "winTrick" => 34)
     ),
 
 

@@ -108,6 +108,10 @@ function (dojo, declare) {
 
             switch( stateName )
             {
+                case 'playerTurn':
+                    const activePlayerId = this.getActivePlayerId();
+                    this.playerTable[activePlayerId].removeAll();
+                    break;
 
             /* Example:
 
@@ -159,6 +163,13 @@ function (dojo, declare) {
                 switch( stateName )
                 {
                     case 'firstPlayerTurn':
+                        this.addActionButton( 'playCards', _('Play cards'), 'onPlayCards' );
+                        break;
+                    case 'playerTurn':
+                        this.addActionButton( 'playCards', _('Play cards'), 'onPlayCards' );
+                        this.addActionButton( 'pass', _('Pass'), 'onPass' );
+                        break;
+                    case 'newTrick':
                         this.addActionButton( 'playCards', _('Play cards'), 'onPlayCards' );
                         break;
 /*
@@ -288,6 +299,10 @@ function (dojo, declare) {
                 this.ajaxcall( "/bigtwo/bigtwo/playCards.html", { cards: cardIds.join(','), lock: true }, this, function( result ) {
                 }, function( is_error) { } );
            }
+       },
+
+       onPass: function() {
+           this.ajaxcall( "/bigtwo/bigtwo/pass.html", { lock: true }, this, function( result ) {}, function( is_error) { } );
        },
 
 

@@ -44,18 +44,25 @@
     public function playCards()
     {
       self::setAjaxMode();
-        $cards_raw = self::getArg( "cards", AT_numberlist, true );
+      $cards_raw = self::getArg( "cards", AT_numberlist, true );
 
-        // Removing last ';' if exists
-        if( substr( $cards_raw, -1 ) == ',' )
-            $cards_raw = substr( $cards_raw, 0, -1 );
-        if( $cards_raw == '' )
-            $cards = array();
-        else
-            $cards = explode( ',', $cards_raw );
+      // Removing last ';' if exists
+      if( substr( $cards_raw, -1 ) == ',' )
+          $cards_raw = substr( $cards_raw, 0, -1 );
+      if( $cards_raw == '' )
+          $cards = array();
+      else
+          $cards = explode( ',', $cards_raw );
 
-        $this->game->playCards( $cards );
-        self::ajaxResponse( );
+      $this->game->playCards( $cards );
+      self::ajaxResponse( );
+    }
+
+    public function pass()
+    {
+      self::setAjaxMode();
+      $this->game->pass();
+      self::ajaxResponse( );
     }
 
 
