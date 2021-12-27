@@ -16,10 +16,10 @@
  */
 
  const NUM_OF_CARDS_PER_ROW = 15;
- const CARD_WIDTH = 375 * 0.4;
- const CARD_HEIGHT = 525 * 0.4;
- const SCENARIO_CARD_WIDTH = 375 * 0.5;
- const SCENARIO_CARD_HEIGHT = 244 * 0.5;
+ const CARD_WIDTH = 375 * 0.20;
+ const CARD_HEIGHT = 525 * 0.20;
+ const SCENARIO_CARD_WIDTH = 375 * 0.25;
+ const SCENARIO_CARD_HEIGHT = 244 * 0.25;
 
 define([
     "dojo","dojo/_base/declare",

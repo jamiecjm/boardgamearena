@@ -71,17 +71,56 @@ $machinestates = array(
         "type" => "game",
         "action" => "stNewHand",
         "updateGameProgression" => true,
-        "transitions" => array("" => 31)
+        "transitions" => array("" => 30)
+    ),
+
+    30 => array(
+        "name" => "firstPlayerTurn",
+        "description" => clienttranslate('${actplayer} must play the three of diamonds'),
+        "descriptionmyturn" => clienttranslate('${you} must play the three of diamonds'),
+        "type" => "activeplayer",
+        "possibleactions" => array("playCards"),
+        "transitions" => array("playCards" => 40)
     ),
 
     31 => array(
         "name" => "playerTurn",
-        "description" => clienttranslate('${actplayer} must play a card'),
-        "descriptionmyturn" => clienttranslate('${you} must play a card'),
+        "description" => clienttranslate('${actplayer} must play a ${combination} or pass'),
+        "descriptionmyturn" => clienttranslate('${you} must play a ${combination} or pass'),
         "type" => "activeplayer",
-        "possibleactions" => array("playCard"),
-        "transitions" => array("playCard" => 32)
+        "args" => "argPlayerTurn",
+        "possibleactions" => array("playCards", "pass"),
+        "transitions" => array("playCards" => 40, "pass" => 41)
     ),
+
+    34 => array(
+        "name" => "newTrick",
+        "description" => clienttranslate('${actplayer} must play a card or a combination'),
+        "descriptionmyturn" => clienttranslate('${you} must play a card or a combination'),
+        "type" => "activeplayer",
+        "possibleactions" => array("playCards"),
+        "transitions" => array("playCards" => 31)
+    ),
+
+    40 => array(
+        "name" => "nextPlayer",
+        "description" => "",
+        "type" => "game",
+        "action" => "stNextPlayer",
+        "updateGameProgression" => true,
+        "transitions" => array("nextPlayer" => 31, "endGame" => 99)
+    ),
+
+    41 => array(
+        "name" => "pass",
+        "description" => "",
+        "type" => "game",
+        "action" => "stPass",
+        "updateGameProgression" => true,
+        "transitions" => array("nextPlayer" => 31, "winTrick" => 34)
+    ),
+
+
 
     /*
     Examples:
@@ -100,8 +139,8 @@ $machinestates = array(
         "description" => clienttranslate('${actplayer} must play a card or pass'),
         "descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
         "type" => "activeplayer",
-        "possibleactions" => array( "playCard", "pass" ),
-        "transitions" => array( "playCard" => 2, "pass" => 2 )
+        "possibleactions" => array( "playCards", "pass" ),
+        "transitions" => array( "playCards" => 2, "pass" => 2 )
     ),
 
 */

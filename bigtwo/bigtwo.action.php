@@ -7,7 +7,7 @@
  * This code has been produced on the BGA studio platform for use on https://boardgamearena.com.
  * See http://en.doc.boardgamearena.com/Studio for more information.
  * -----
- * 
+ *
  * bigtwo.action.php
  *
  * BigTwo main action entry point
@@ -15,15 +15,15 @@
  *
  * In this file, you are describing all the methods that can be called from your
  * user interface logic (javascript).
- *       
+ *
  * If you define a method "myAction" here, then you can call it from your javascript code with:
  * this.ajaxcall( "/bigtwo/bigtwo/myAction.html", ...)
  *
  */
-  
-  
+
+
   class action_bigtwo extends APP_GameAction
-  { 
+  {
     // Constructor: please do not modify
    	public function __default()
   	{
@@ -37,18 +37,42 @@
             $this->view = "bigtwo_bigtwo";
             self::trace( "Complete reinitialization of board game" );
       }
-  	} 
-  	
+  	}
+
   	// TODO: defines your action entry points there
+
+    public function playCards()
+    {
+      self::setAjaxMode();
+      $cards_raw = self::getArg( "cards", AT_numberlist, true );
+
+      // Removing last ';' if exists
+      if( substr( $cards_raw, -1 ) == ',' )
+          $cards_raw = substr( $cards_raw, 0, -1 );
+      if( $cards_raw == '' )
+          $cards = array();
+      else
+          $cards = explode( ',', $cards_raw );
+
+      $this->game->playCards( $cards );
+      self::ajaxResponse( );
+    }
+
+    public function pass()
+    {
+      self::setAjaxMode();
+      $this->game->pass();
+      self::ajaxResponse( );
+    }
 
 
     /*
-    
+
     Example:
-  	
+
     public function myAction()
     {
-        self::setAjaxMode();     
+        self::setAjaxMode();
 
         // Retrieve arguments
         // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
@@ -60,9 +84,7 @@
 
         self::ajaxResponse( );
     }
-    
+
     */
 
   }
-  
-

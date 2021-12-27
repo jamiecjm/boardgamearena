@@ -34,7 +34,7 @@ class BigTwo extends Table
         parent::__construct();
 
         self::initGameStateLabels(array(
-            //    "my_first_global_variable" => 10,
+            "last_player_id" => 10,
             //    "my_second_global_variable" => 11,
             //      ...
             //    "my_first_game_variant" => 100,
@@ -94,16 +94,18 @@ class BigTwo extends Table
 
         // Create cards
         $cards = array();
-        foreach ($this->colors as  $color_id => $color) // spade, heart, diamond, club
+        for ($rank = 3; $rank <= 15; $rank++)   //  3, 4, ... K, A, 2
         {
-            for ($value = 2; $value <= 14; $value++)   //  2, 3, 4, ... K, A
+            foreach ($this->suits as  $suit_id => $suit) // diamond, club, heart, spade
             {
-                $cards[] = array('type' => $color_id, 'type_arg' => $value, 'nbr' => 1);
+                $cards[] = array('type' => $suit_id, 'type_arg' => $rank, 'nbr' => 1);
             }
         }
 
         $this->cards->createCards($cards, 'deck');
+        // $this->cards->createCards($cards, 'archive');
 
+        self::setGameStateInitialValue('last_player_id', 0);
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -132,6 +134,10 @@ class BigTwo extends Table
         $result['players'] = self::getCollectionFromDb($sql);
 
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
+
+        // Cards in player hand
+        $result['hand'] = $this->cards->getCardsInLocation('hand', $current_player_id);
+        $result['table'] = $this->cards->getCardsInLocation('table');
 
         return $result;
     }
@@ -162,6 +168,55 @@ class BigTwo extends Table
         In this space, you can put any utility methods useful for your game logic
     */
 
+    function getLastPlayedCards()
+    {
+        $last_player_id = self::getGameStateValue("last_player_id");
+        $cardsPlayed = $this->cards->getCardsInLocation('table', $last_player_id);
+        return $cardsPlayed;
+    }
+
+    function getCardCombination($cards)
+    {
+        $ranks = array_column($cards, "type_arg");
+        $unique_ranks = array_unique($ranks);
+        $suits = array_column($cards, "type");
+        $unique_suits = array_unique($suits);
+        $card_count = count($cards);
+        if ($card_count == 1) {
+            return array(
+                "combination" => "single",
+                "rank" => $unique_ranks[0],
+                "suit" => $unique_suits[0],
+                "description" => $unique_ranks[0] . " of " . $unique_suits[0]
+            );
+        } else if ($card_count == 2) {
+            if (count($unique_ranks) == 1) {
+                return array(
+                    "combination" => "pair",
+                    "rank" => $unique_ranks[0],
+                    "description" => clienttranslate("a pair of " . $unique_ranks[0])
+                );
+            } else {
+                throw new feException(self::_("Invalid card combinations"));
+            }
+        } else if ($card_count == 3) {
+            if (count($unique_ranks) == 1) {
+                return array(
+                    "combination" => "triple",
+                    "rank" => $unique_ranks[0],
+                    "description" => clienttranslate("a triple " . $unique_ranks[0])
+                );
+            } else {
+                throw new feException(self::_("Invalid card combinations"));
+            }
+        } else if ($card_count == 5) {
+            return array(
+                "combination" => "group of 5 cards",
+            );
+        } else {
+            throw new feException(self::_("Invalid card combinations"));
+        }
+    }
 
 
     //////////////////////////////////////////////////////////////////////////////
@@ -172,6 +227,80 @@ class BigTwo extends Table
         Each time a player is doing some game action, one of the methods below is called.
         (note: each method below must match an input method in bigtwo.action.php)
     */
+
+    function playCards($card_ids)
+    {
+        self::checkAction('playCards');
+        $player_id = self::getActivePlayerId();
+
+        // discard active player's cards on table
+        $this->cards->moveAllCardsInLocation('table', 'discard', $player_id);
+
+        $cards = $this->cards->getCards($card_ids);
+        $lastCardsPlayed = $this->getLastPlayedCards();
+
+        // Check if these cards are in player hands
+        foreach ($cards as $card) {
+            if ($card['location'] != 'hand' || $card['location_arg'] != $player_id)
+                throw new feException(self::_("Some of these cards are not in your hand"));
+        }
+
+        // check cards combination
+        $card_combination = $this->getCardCombination($cards);
+
+        // first card or new trick
+        if (count($lastCardsPlayed) == 0) {
+            $discardPile = $this->cards->getCardsInLocation('discard');
+            // first card
+            if (count($discardPile) == 0) {
+                // must have three of diamonds
+                $three_of_diamonds = array_values($this->cards->getCardsOfType(1, 3))[0];
+                if (!in_array($three_of_diamonds, $cards)) {
+                    throw new feException(self::_("You must play the three of diamonds"));
+                }
+            }
+        } else {
+            if (count($cards) != count($lastCardsPlayed))
+                throw new feException(self::_("You must play the same number of cards"));
+
+            // compare cards
+        }
+
+        // move played cards to table
+        $this->cards->moveCards($card_ids, 'table', $player_id);
+
+        self::setGameStateValue("last_player_id", $player_id);
+
+        // And notify
+        self::notifyAllPlayers('playCards', clienttranslate('${player_name} plays ${combination}'), array(
+            'i18n' => array('combination'),
+            "cards" => $cards,
+            'card_ids' => $card_ids,
+            'player_id' => $player_id,
+            'player_name' => self::getActivePlayerName(),
+            'combination' => $card_combination['description']
+        ));
+
+        $this->gamestate->nextState('playCards');
+    }
+
+    function pass()
+    {
+        self::checkAction('pass');
+
+        $player_id = self::getActivePlayerId();
+
+        // discard active player's cards on table
+        $this->cards->moveAllCardsInLocation('table', 'discard', $player_id);
+
+        // And notify
+        self::notifyAllPlayers('playCards', clienttranslate('${player_name} passes'), array(
+            'player_id' => $player_id,
+            'player_name' => self::getActivePlayerName()
+        ));
+
+        $this->gamestate->nextState('pass');
+    }
 
     /*
 
@@ -227,6 +356,16 @@ class BigTwo extends Table
     }
     */
 
+    function argPlayerTurn()
+    {
+        $last_played_cards = $this->getLastPlayedCards();
+        $combination = $this->getCardCombination($last_played_cards);
+
+        return array(
+            "combination" => $combination['combination']
+        );
+    }
+
     //////////////////////////////////////////////////////////////////////////////
     //////////// Game state actions
     ////////////
@@ -254,7 +393,40 @@ class BigTwo extends Table
             ));
         }
 
+        // get the smallest card - 3 of diamonds
+        $three_of_diamonds = array_values($this->cards->getCardsOfType(1, 3))[0];
+        $threeDiamondsCardOwner = $three_of_diamonds['location_arg'];
+        $this->gamestate->changeActivePlayer($threeDiamondsCardOwner);
+
         $this->gamestate->nextState("");
+    }
+
+    function stNextPlayer()
+    {
+
+        $player_id = $this->getActivePlayerId();
+        $cards_left = $this->cards->countCardInLocation('hand', $player_id);
+
+        if ($cards_left == 0) {
+            $this->gamestate->nextState("endGame");
+        } else {
+            $this->activeNextPlayer();
+            $this->gamestate->nextState("nextPlayer");
+        }
+    }
+
+    function stPass()
+    {
+        $player_id = $this->getActivePlayerId();
+        $next_player = $this->getPlayerAfter($player_id);
+        $last_player_id = self::getGameStateValue('last_player_id');
+
+        $this->activeNextPlayer();
+        if ($next_player['player_id'] == $last_player_id) {
+            $this->gamestate->nextState("winTrick");
+        } else {
+            $this->gamestate->nextState("nextPlayer");
+        }
     }
 
     /*

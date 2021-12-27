@@ -68,19 +68,19 @@
 */
 
 :root {
-    --ocean-scale: 0.25;
+    --ocean-scale: 0.15;
     --reef-width: calc(1752px * var(--ocean-scale));
     --reef-height: calc(1752px * var(--ocean-scale));
     --reef-img: url(./img/reef_board_050.png);
     --ocean-width: calc(2505px * var(--ocean-scale));
     --ocean-height: calc(1785px * var(--ocean-scale));
     --ocean-img: url(./img/ocean_board_050.png);
-    --scenario-cards-scale: 0.5;
+    --scenario-cards-scale: 0.25;
     --scenario-cards-width: calc(375px * var(--scenario-cards-scale));
     --scenario-cards-height: calc(244px * var(--scenario-cards-scale));
     --scenario-cards-background-size: calc(5626px * var(--scenario-cards-scale));
     --scenario-cards-img: url(./img/scenario_cards_100.png);
-    --cards-scale: 0.4;
+    --cards-scale: 0.20;
     --cards-height: calc(525px * var(--cards-scale));
     --cards-width: calc(375px * var(--cards-scale));
     --cards-background-size: calc(5625px * var(--cards-scale));
@@ -94,6 +94,13 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+#oceans_board {
+    position: absolute;
+    top: 180px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 #reef {
@@ -127,11 +134,11 @@
     background-size: var(--scenario-cards-background-size);
     width: var(--scenario-cards-width);
     height: var(--scenario-cards-height);
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 #scenario_card_1, #scenario_card_2 {
-    left: 11px;
+    left: 15px;
     position: absolute;
     bottom: 10px;
 }
@@ -165,7 +172,7 @@
     flex: 1;
     margin: 0 5px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 #surface_card_back {
@@ -190,10 +197,10 @@
 }
 
 .counter {
-    width: 30px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
     border-radius: 35px;
-    border: 2px solid black;
+    border: 1px solid black;
     text-align: center;
     position: relative;
     display: flex;
@@ -202,9 +209,47 @@
 }
 
 .counter > div {
-    font-size: 25px;
+    font-size: 15px;
 }
 
 .population_count {
     left: 10px;
+}
+
+#playertables {
+    position: relative;
+    width: 100%;
+    height: 750px;
+}
+
+.playertablename {
+    font-weight: bold;
+}
+
+.playertable {
+    position: absolute;
+    text-align: center;
+    width: 420;
+    height: 130px;
+}
+
+.playertable_N {
+    left: 50%;
+    top: 0px;
+    transform: translateX(-50%);
+}
+.playertable_S {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0px;
+}
+.playertable_W {
+    left: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.playertable_E {
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
 }

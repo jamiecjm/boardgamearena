@@ -25,6 +25,20 @@
     Please REMOVE this comment before publishing your game on BGA
 -->
 
+<div id="playertables">
+
+    <!-- BEGIN player -->
+    <div class="playertable whiteblock playertable_{DIR}">
+        <div class="playertablename" style="color:#{PLAYER_COLOR}">
+            {PLAYER_NAME}
+        </div>
+        <div class="playertablecard" id="playertablecard_{PLAYER_ID}">
+        </div>
+    </div>
+    <!-- END player -->
+
+</div>
+
 <div id="oceans_board">
     <div id="main">
         <div id="reef">
@@ -59,6 +73,7 @@
         </div>
     </div>
 </div>
+
 
 
 <script type="text/javascript">
