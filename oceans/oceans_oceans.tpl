@@ -74,6 +74,12 @@
     </div>
 </div>
 
+<div id="myhand_wrap" class="whiteblock">
+    <h3>{MY_HAND}</h3>
+    <div id="myhand">
+    </div>
+</div>
+
 
 
 <script type="text/javascript">
@@ -87,8 +93,8 @@ var jstpl_some_game_item='<div class="my_game_item" id="my_game_item_${MY_ITEM_I
 */
 
 var jstpl_discardSurface = '<div class="cards surface_cards" style="background-position:-${x}px 0px"></div>';
-var jstpl_oceanZone1Scenario = '<div class="scenario_cards" style="background-position:-${x}px -${y}px"></div>';
-var jstpl_oceanZone2Scenario = '<div class="scenario_cards" style="background-position:-${x}px -${y}px"></div>';
+var jstpl_oceanZone1Scenario = '<div class="scenario_cards" style="background-position:-${x}px 0px"><div class="scenario_cards_title">${title}</div><div class="scenario_cards_description"><div>${description}</div></div></div>';
+var jstpl_oceanZone2Scenario = '<div class="scenario_cards" style="background-position:-${x}px 0px"><div class="scenario_cards_title">${title}</div><div class="scenario_cards_description"><div>${description}</div></div></div>';
 
 </script>
 

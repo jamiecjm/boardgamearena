@@ -35,6 +35,10 @@ function (dojo, declare) {
             // Here, you can init the global variables of your user interface
             // Example:
             // this.myGlobalValue = 0;
+            this.playerHand = null;
+            this.cardwidth = CARD_WIDTH;
+            this.cardheight = CARD_HEIGHT;
+            this.cards = null;
 
         },
 
@@ -73,13 +77,15 @@ function (dojo, declare) {
             const oceanZone2Scenario = this.cards['oceanZone2Scenario'];
             dojo.place(
                 this.format_block( 'jstpl_oceanZone1Scenario', {
-                    x: SCENARIO_CARD_WIDTH*((Number(oceanZone1Scenario.type_arg) - 2001) % NUM_OF_CARDS_PER_ROW),
-                    y: SCENARIO_CARD_HEIGHT*Math.floor((Number(oceanZone1Scenario.type_arg) - 2001) / NUM_OF_CARDS_PER_ROW),
+                    x: SCENARIO_CARD_WIDTH*(oceanZone1Scenario.event ? 1 : 0),
+                    title: oceanZone1Scenario.title,
+                    description: oceanZone1Scenario.description
                 } ), 'scenario_card_1' );
             dojo.place(
                 this.format_block( 'jstpl_oceanZone2Scenario', {
-                    x: SCENARIO_CARD_WIDTH*((Number(oceanZone2Scenario.type_arg) - 2001) % NUM_OF_CARDS_PER_ROW),
-                    y: SCENARIO_CARD_HEIGHT*Math.floor((Number(oceanZone2Scenario.type_arg) - 2001) / NUM_OF_CARDS_PER_ROW),
+                    x: SCENARIO_CARD_WIDTH*(oceanZone2Scenario.event ? 1 : 0),
+                    title: oceanZone2Scenario.title,
+                    description: oceanZone2Scenario.description
                 } ), 'scenario_card_2' );
 
             // display surface deck count

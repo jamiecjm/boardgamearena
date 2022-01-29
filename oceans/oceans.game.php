@@ -140,7 +140,7 @@ class oceans extends Table
 
         // Create reserve tokens
         $reserve_tokens = array();
-        $reserve_tokens[] = array('type' => 'populationToken', 'type_arg' => 4, 'nbr' => 60);
+        $reserve_tokens[] = array('type' => 'populationToken', 'type_arg' => 2, 'nbr' => 60);
         $this->cards->createCards($reserve_tokens, TOKEN_RESERVE);
 
         // Create population tokens
@@ -148,16 +148,16 @@ class oceans extends Table
         $population_tokens = array();
         $population_tokens[] = array('type' => 'populationToken', 'type_arg' => 1, 'nbr' => 100);
         $number_of_population_tokens = 100;
-        if (count($players) >= 3) {
-            $population_tokens[] = array('type' => 'populationToken', 'type_arg' => 2, 'nbr' => 20);
+        if (count($players) == 2) {
+        } elseif (count($players) >= 3) {
+
+            $population_tokens[] = array('type' => 'populationToken', 'type_arg' => 2, 'nbr' => 120);
             $number_of_population_tokens = 120;
-        }
-        if (count($players) >= 4) {
-            $population_tokens[] = array('type' => 'populationToken', 'type_arg' => 3, 'nbr' => 20);
+        } elseif (count($players) >= 4) {
+            $population_tokens[] = array('type' => 'populationToken', 'type_arg' => 3, 'nbr' => 140);
             $number_of_population_tokens = 140;
         }
         $this->cards->createCards($population_tokens, TOKEN_POPULATION);
-        $this->cards->shuffle(TOKEN_POPULATION);
 
         // Roughly divide the supply of population tokens into 4 piles
         // place each pile into the 4 available locations: the Reef and the 3 Ocean zones
@@ -209,8 +209,8 @@ class oceans extends Table
             'surfaceCards' => $this->surfaceCards,
             'deckSurfaceCount' => $this->cards->countCardInLocation(DECK_SURFACE),
             DISCARD_SURFACE => $this->cards->getCardOnTop(DISCARD_SURFACE),
-            OCEAN_ZONE1_SCENARIO => $this->cards->getCardOnTop(OCEAN_ZONE1_SCENARIO),
-            OCEAN_ZONE2_SCENARIO => $this->cards->getCardOnTop(OCEAN_ZONE2_SCENARIO),
+            OCEAN_ZONE1_SCENARIO => $this->scenarioCards[$this->cards->getCardOnTop(OCEAN_ZONE1_SCENARIO)['type_arg']],
+            OCEAN_ZONE2_SCENARIO => $this->scenarioCards[$this->cards->getCardOnTop(OCEAN_ZONE2_SCENARIO)['type_arg']],
         );
 
         $result['tokens'] = array(
@@ -221,7 +221,7 @@ class oceans extends Table
         );
 
         // Cards in player hand
-        $result['hand'] = $this->cards->getCardsInLocation('hand');
+        $result['hand'] = $this->cards->getCardsInLocation('hand', $current_player_id);
 
         return $result;
     }

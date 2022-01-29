@@ -71,21 +71,24 @@
     --ocean-scale: 0.15;
     --reef-width: calc(1752px * var(--ocean-scale));
     --reef-height: calc(1752px * var(--ocean-scale));
-    --reef-img: url(./img/reef_board_050.png);
+    --reef-img: url(./img/reef_board_050.jpg);
     --ocean-width: calc(2505px * var(--ocean-scale));
     --ocean-height: calc(1785px * var(--ocean-scale));
-    --ocean-img: url(./img/ocean_board_050.png);
+    --ocean-img: url(./img/ocean_board_050.jpg);
     --scenario-cards-scale: 0.25;
     --scenario-cards-width: calc(375px * var(--scenario-cards-scale));
     --scenario-cards-height: calc(244px * var(--scenario-cards-scale));
-    --scenario-cards-background-size: calc(5626px * var(--scenario-cards-scale));
-    --scenario-cards-img: url(./img/scenario_cards_100.png);
+    --scenario-cards-background-size: calc(750px * var(--scenario-cards-scale));
+    --scenario-cards-img: url(./img/scenario_cards.jpg);
     --cards-scale: 0.20;
     --cards-height: calc(525px * var(--cards-scale));
     --cards-width: calc(375px * var(--cards-scale));
-    --cards-background-size: calc(5625px * var(--cards-scale));
-    --deep-cards-img: url(./img/deep_cards_080.png);
-    --surface-cards-img: url(./img/surface_cards_080.png);
+    --deep-cards-img: url(./img/deep_cards.jpg);
+    --surface-cards-img: url(./img/surface_cards.jpg);
+}
+
+#myhand_wrap{
+    text-align: center;
 }
 
 #main {
@@ -134,7 +137,24 @@
     background-size: var(--scenario-cards-background-size);
     width: var(--scenario-cards-width);
     height: var(--scenario-cards-height);
-    border-radius: 5px;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    padding: 13px 5px;
+    box-sizing: border-box;
+}
+
+.scenario_cards_title{
+    font-size: 7px;
+    font-weight: 600;
+}
+
+.scenario_cards_description {
+    font-size: 6px;
+    flex: 1;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 #scenario_card_1, #scenario_card_2 {
@@ -160,19 +180,19 @@
     display: inline-block;
     height: var(--cards-height);
     width: var(--cards-width);
-    background-size: var(--cards-background-size);
     background-repeat: no-repeat;
 }
 
 .surface_cards {
     background-image: var(--surface-cards-img);
+    background-size: calc(3900px * 0.25);
+    border-radius: 3px;
 }
 
 #surface_deck > div, #deep_deck > div {
     flex: 1;
     margin: 0 5px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    border-radius: 5px;
 }
 
 #surface_card_back {
@@ -185,6 +205,8 @@
 
 .deep_cards {
     background-image: var(--deep-cards-img);
+    background-size: calc(5625px * 0.2);
+    border-radius: 3px;
 }
 
 #deep_card_back {
